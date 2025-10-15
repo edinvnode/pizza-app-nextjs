@@ -68,22 +68,19 @@ const data = [
 
 export default function Home() {
   return (
-    <div className="bg-gray-50">
+    <div className="bg-gray-50 ">
       <h1
         className="text-3xl font-bold underline text-center"
         onClick={() => alert('Test!')}
       >
         Pizza Shop
       </h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, non ex
-        in aliquam libero fugiat id. Neque, debitis facere? Consectetur
-        necessitatibus nemo possimus recusandae non numquam, totam quae
-        quibusdam cum.
-      </p>
-      {data.map((pizza, index) => (
-        <Pizza pizzaData={pizza} key={pizza.id} />
-      ))}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center p-4">
+        {data.map((pizza, index) => (
+          <Pizza pizzaData={pizza} key={pizza.id} />
+        ))}
+      </div>
     </div>
   );
 }
