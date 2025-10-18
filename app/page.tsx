@@ -1,7 +1,4 @@
-'use client';
-
 import Pizza from '@/components/Pizza';
-import { useEffect } from 'react';
 
 const data = [
   {
@@ -68,10 +65,9 @@ const data = [
 
 export default function Home() {
   return (
-    <div className="bg-gray-50 ">
-      <h1 className="text-3xl font-bold underline text-center">Pizza Shop</h1>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-1 place-items-center p-4">
+    <div className="bg-gray-50 align-middle">
+      <h1 className="text-3xl font-bold text-center mb-5">Pizza Shop</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-1 place-items-center p-4 gap-5">
         {data.map((pizza, index) => (
           <Pizza pizzaData={pizza} key={pizza.id} />
         ))}
