@@ -1,6 +1,6 @@
 'use client';
 
-import Pizza from '@/comps/Pizza';
+import Pizza from '@/components/Pizza';
 import { useEffect } from 'react';
 
 const data = [
@@ -69,12 +69,7 @@ const data = [
 export default function Home() {
   return (
     <div className="bg-gray-50 ">
-      <h1
-        className="text-3xl font-bold underline text-center"
-        onClick={() => alert('Test!')}
-      >
-        Pizza Shop
-      </h1>
+      <h1 className="text-3xl font-bold underline text-center">Pizza Shop</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-1 place-items-center p-4">
         {data.map((pizza, index) => (
