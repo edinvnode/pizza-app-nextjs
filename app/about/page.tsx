@@ -19,13 +19,11 @@ export default function Details () {
 
   return(
     <div className="bg-gray-200 h-60 w-55 p-5">
-      <hr/>
       <p><strong>Name: </strong>{name}</p>
       <hr/>
-      <p><strong>Price: </strong>{price}</p>
+      <p className="mt-2"><strong>Price: </strong>{price}</p>
       <hr/>
-      <p><strong>Description: </strong> Nam eu fringilla felis. Curabitur in magna molestie, tristique massa nec, molestie lectus. </p>
-      <hr/>
+      <p className="mt-2"><strong>Description: </strong> Nam eu fringilla felis. Curabitur in magna molestie, tristique massa nec, molestie lectus. </p>
       <button className="float-right text-orange-800 cursor-pointer"><Link href="/"><strong>Back</strong></Link></button>
     </div>
   )
