@@ -1,7 +1,6 @@
-'use client';
+'use_client';
 
 import Pizza from '@/components/Pizza';
-import { useEffect } from 'react';
 
 const data = [
   {
