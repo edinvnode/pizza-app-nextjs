@@ -21,8 +21,10 @@ const Pizza: React.FC<PropType> = ({ pizzaData }) => {
 
     if (e.type === "mouseenter") {
       divRef.current.style.border = "2px solid grey";
+      divRef.current.style.opacity = "0.5";
     } else if (e.type === "mouseleave") {
       divRef.current.style.border = "2px solid transparent";
+      divRef.current.style.opacity = "1";
     }
   };
 
