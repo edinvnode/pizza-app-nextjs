@@ -3,14 +3,10 @@ import Image from "next/image";
 import { useRef } from "react";
 import { useState } from "react";
 import Modal from "@/components/Modal";
+import { PizzaType } from "@/app/page";
 
 type PropType = {
-  pizzaData: {
-    id: number;
-    name: string;
-    price: string;
-    image: string;
-  };
+  pizzaData: PizzaType;
 };
 
 const Pizza: React.FC<PropType> = ({ pizzaData }) => {

@@ -1,4 +1,4 @@
-export const data = [
+export const pizzas = [
   { id: 1, name: 'Pizza romana', price: '10$', image: '/pizza romana.jpg' },
   { id: 2, name: 'Pizza capricciosa', price: '15$', image: '/pizza capricciosa.jpg' },
   { id: 3, name: 'Pizza americana', price: '12$', image: '/pizza americana.jpg' },
