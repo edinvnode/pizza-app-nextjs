@@ -18,7 +18,7 @@ export default function Details () {
   const price = pizzaData?.price ?? "N/A";
 
   return(
-    <div className="bg-gray-200 h-60 w-55 p-5">
+    <div className="bg-gray-200 w-55 p-5">
       <p><strong>Name: </strong>{name}</p>
       <hr/>
       <p className="mt-2"><strong>Price: </strong>{price}</p>
