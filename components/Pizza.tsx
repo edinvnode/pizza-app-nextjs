@@ -19,7 +19,9 @@ const Pizza: React.FC<PropType> = ({ pizzaData }) => {
 
   const handleBorder = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!divRef.current) return;
-    e.type === "mouseover" ? divRef.current.style.border = '2px solid grey' : divRef.current.style.border = '2px solid transparent';
+    e.type === 'mouseover'
+      ? (divRef.current.style.border = '2px solid grey')
+      : (divRef.current.style.border = '2px solid transparent');
   };
 
   return (
@@ -31,12 +33,12 @@ const Pizza: React.FC<PropType> = ({ pizzaData }) => {
     >
       <Image
         className="ml-3"
-        width={150}
-        height={150}
+        width={250}
+        height={250}
         src={pizzaData.image as string}
         alt={pizzaData.name}
       />
-      <button className="absolute left-1/3 cursor-pointer" onClick={() => setIsOpen(true)}>
+      <button className="absolute left-2/5 cursor-pointer" onClick={() => setIsOpen(true)}>
         View More
       </button>
 
