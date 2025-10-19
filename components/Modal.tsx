@@ -13,7 +13,7 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-black/50" onClick={onClose}></div>
-      <div className="relative bg-white rounded-2xl shadow-lg p-6 z-10 w-[90%] max-w-md">
+      <div className="relative bg-white rounded-2xl shadow-lg p-6 z-10 w-[90%] max-w-md text-xl">
         {children}
         <button
           onClick={onClose}

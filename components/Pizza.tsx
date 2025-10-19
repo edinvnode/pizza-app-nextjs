@@ -1,8 +1,8 @@
-'use client';
-import Image from 'next/image';
-import { useRef } from 'react';
-import { useState } from 'react';
-import Modal from '@/components/Modal';
+"use client";
+import Image from "next/image";
+import { useRef } from "react";
+import { useState } from "react";
+import Modal from "@/components/Modal";
 
 type PropType = {
   pizzaData: {
@@ -19,9 +19,9 @@ const Pizza: React.FC<PropType> = ({ pizzaData }) => {
 
   const handleBorder = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!divRef.current) return;
-    e.type === 'mouseover'
-      ? (divRef.current.style.border = '2px solid grey')
-      : (divRef.current.style.border = '2px solid transparent');
+    e.type === "mouseover"
+      ? (divRef.current.style.border = "2px solid grey")
+      : (divRef.current.style.border = "2px solid transparent");
   };
 
   return (
@@ -38,32 +38,28 @@ const Pizza: React.FC<PropType> = ({ pizzaData }) => {
         src={pizzaData.image as string}
         alt={pizzaData.name}
       />
-      <button className="absolute left-2/5 cursor-pointer" onClick={() => setIsOpen(true)}>
+      <button
+        className="absolute left-2/5 cursor-pointer"
+        onClick={() => setIsOpen(true)}
+      >
         View More
       </button>
 
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <p>
           <strong>Name: </strong>
-          {pizzaData?.name ?? 'Pizza'}
+          {pizzaData?.name ?? "Pizza"}
         </p>
         <hr />
         <p className="mt-2">
           <strong>Price: </strong>
-          {pizzaData?.price ?? 'Price'}
+          {pizzaData?.price ?? "Price"}
         </p>
         <hr />
         <p className="mt-2">
-          <strong>Description: </strong> Nam eu fringilla felis. Curabitur in magna molestie,
-          tristique massa nec, molestie lectus.{' '}
+          <strong>Description: </strong> Nam eu fringilla felis. Curabitur in
+          magna molestie, tristique massa nec, molestie lectus.
         </p>
-
-        <button
-          onClick={() => setIsOpen(false)}
-          className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900 mt-5 cursor-pointer"
-        >
-          Close
-        </button>
       </Modal>
     </div>
   );
