@@ -1,3 +1,4 @@
+"use server";
 import Pizza from "@/components/Pizza";
 
 export type PizzaType = {

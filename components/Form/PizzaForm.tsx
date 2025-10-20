@@ -3,7 +3,7 @@ import { useModal } from "../Modal/ModalContext";
 
 interface FormData {
   name: string;
-  price: string;
+  price: number;
   image: string | File;
 }
 
@@ -12,7 +12,7 @@ export default function PizzaForm() {
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
-    price: "",
+    price: 0.0,
     image: "",
   });
 
@@ -24,9 +24,18 @@ export default function PizzaForm() {
     });
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+
+    let response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/pizzas`,
+      {
+        method: "POST",
+        body: JSON.stringify(formData),
+      }
+    );
+    response = await response.json();
+
     close();
   };
 
@@ -42,6 +51,9 @@ export default function PizzaForm() {
           value={formData.name}
           onChange={handleChange}
           className="border rounded p-2 w-full"
+          id="name"
+          placeholder="Margherita"
+          required
         />
       </div>
 
@@ -50,11 +62,15 @@ export default function PizzaForm() {
           Price:
         </label>
         <input
-          type="text"
+          type="number"
           name="price"
           value={formData.price}
           onChange={handleChange}
           className="border rounded p-2 w-full"
+          id="price"
+          min="0"
+          step="0.01"
+          required
         />
       </div>
 
@@ -67,12 +83,15 @@ export default function PizzaForm() {
           name="image"
           onChange={handleChange}
           className="border rounded p-2 w-full"
+          id="image"
+          required
         />
       </div>
 
       <button
         type="submit"
-        className="bg-[#1B2533] text-white px-4 py-2 rounded"
+        className={`bg-[#1B2533] text-white px-4 py-2 rounded ${!formData.name || !formData.price || !formData.image ? "bg-gray-400 cursor-not-allowed" : "bg-[#1B2533]"}`}
+        disabled={!formData.name || !formData.price || !formData.image}
       >
         Submit
       </button>
