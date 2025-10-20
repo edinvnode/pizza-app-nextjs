@@ -8,7 +8,9 @@ export type PizzaType = {
 };
 
 export default async function Home() {
-  const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/pizzas`, { cache: "no-store" });
+  const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/pizzas`, {
+    cache: "no-store",
+  });
   const pizzaData: PizzaType[] = await data.json();
 
   return (

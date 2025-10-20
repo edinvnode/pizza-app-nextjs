@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
 import { useRef } from "react";
-import { useState } from "react";
-import Modal from "@/components/Modal";
 import { PizzaType } from "@/app/page";
+import Modal from "@/components/Modal/Modal";
+import { useModal } from "./Modal/ModalContext";
 
 type PropType = {
   pizzaData: PizzaType;
@@ -11,7 +11,7 @@ type PropType = {
 
 const Pizza: React.FC<PropType> = ({ pizzaData }) => {
   const divRef = useRef<HTMLDivElement | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const { modalType, open, close } = useModal();
 
   const handleBorder = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!divRef.current) return;
@@ -36,12 +36,12 @@ const Pizza: React.FC<PropType> = ({ pizzaData }) => {
       />
       <button
         className="absolute left-2/5 cursor-pointer"
-        onClick={() => setIsOpen(true)}
+        onClick={() => open("pizzaDetails")}
       >
         View More
       </button>
 
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      <Modal isModalOpen={modalType === "pizzaDetails"} closeModal={close}>
         <p>
           <strong>Name: </strong>
           {pizzaData?.name ?? "Pizza"}

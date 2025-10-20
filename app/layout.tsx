@@ -1,14 +1,21 @@
-import './globals.css';
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
+import "./globals.css";
+import Header from "@/components/Header/Header";
+import Footer from "@/components/Footer/Footer";
+import { ModalProvider } from "@/components/Modal/ModalContext";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body>
-        <Header />
+        <ModalProvider>
+          <Header />
           {children}
-        <Footer />
+          <Footer />
+        </ModalProvider>
       </body>
     </html>
   );
