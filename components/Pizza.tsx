@@ -1,31 +1,27 @@
-'use client';
-import Image from 'next/image';
-import Link from 'next/link';
-import Details from '@/app/pizza/[id]/page';
+"use client";
+import Image from "next/image";
+import { useRef } from "react";
+import { useState } from "react";
+import Modal from "@/components/Modal";
+import { PizzaType } from "@/app/page";
 
-interface PizzaProps {
-  pizzaData: {
-    id: number;
-    name: string;
-    price: string;
-    image: string;
-  };
-}
+type PropType = {
+  pizzaData: PizzaType;
+};
 
-export default function Pizza({ pizzaData }: PizzaProps) {
+// Use it in your component
+const Pizza: React.FC<PropType> = ({ pizzaData }) => {
   return (
-    <div className="border rounded-lg shadow-md p-3 text-center hover:shadow-lg transition">
-        <Link href={{ pathname: `/pizza/${pizzaData.id}`, query: { ...pizzaData } }}>
-        <Image
-          src={pizzaData.image}
-          alt={pizzaData.name}
-          width={250}
-          height={250}
-          className="rounded-lg cursor-pointer"
-        />
-      </Link>
-      <h2 className="text-xl font-semibold mt-2">{pizzaData.name}</h2>
-      <p className="text-gray-600">{pizzaData.price}</p>
+    <div className="border text-center">
+      <h2 className="text-center">{pizzaData.name}</h2>
+      <p className="text-center">Price: {pizzaData.price}</p>
+      <Image
+        className="text-center"
+        width={150}
+        height={150}
+        src={pizzaData.image as string}
+        alt={pizzaData.name}
+      />
     </div>
   );
 }
