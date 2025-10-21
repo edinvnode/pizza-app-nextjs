@@ -33,6 +33,7 @@ const Pizza: React.FC<PropType> = ({ pizzaData }) => {
         height={250}
         src={pizzaData.image as string}
         alt={pizzaData.name}
+        style={{ width: '250px', height: '250px', objectFit: 'cover' }}
       />
       <button
         className="absolute left-2/5 cursor-pointer"
