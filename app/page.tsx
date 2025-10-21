@@ -1,3 +1,4 @@
+"use server";
 import Pizza from "@/components/Pizza";
 
 export type PizzaType = {
@@ -8,8 +9,12 @@ export type PizzaType = {
 };
 
 export default async function Home() {
-  const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/pizzas`, { cache: "no-store" });
+  const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/pizzas`, {
+    cache: "no-store",
+  });
   const pizzaData: PizzaType[] = await data.json();
+
+  console.log(pizzaData[0]);
 
   return (
     <div className="bg-gray-50 min-h-screen flex items-center justify-center">
