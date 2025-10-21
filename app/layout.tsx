@@ -1,14 +1,26 @@
-import './globals.css';
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
+import "../styles/globals.css";
+import Header from "@/components/Header/Header";
+import Footer from "@/components/Footer/Footer";
+import ReduxProvider from "@/redux/ReduxProvider";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export const metadata = {
+  title: "Pizza Order App",
+  description: "Full stack web app",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body>
-        <Header />
+        <ReduxProvider>
+          <Header />
           {children}
-        <Footer />
+          <Footer />
+        </ReduxProvider>
       </body>
     </html>
   );
