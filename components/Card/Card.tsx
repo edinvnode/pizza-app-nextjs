@@ -11,7 +11,7 @@ type PropType = {
   pizzaData: PizzaType;
 };
 
-const Pizza: React.FC<PropType> = ({ pizzaData }) => {
+const Card: React.FC<PropType> = ({ pizzaData }) => {
   const divRef = useRef<HTMLDivElement | null>(null);
 
   const modalType = useSelector((state: RootState) => state.modalType.value);
@@ -67,4 +67,4 @@ const Pizza: React.FC<PropType> = ({ pizzaData }) => {
   );
 };
 
-export default Pizza;
+export default Card;

@@ -1,6 +1,6 @@
 "use client";
 import Modal from "../Modal/Modal";
-import PizzaForm from "../Form/PizzaForm";
+import PizzaForm from "../Form/Form";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../redux/store";
 import { pizzaOrder, closeModal } from "@/redux/slices/modalSlice";

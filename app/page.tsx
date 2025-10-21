@@ -1,6 +1,5 @@
 "use client";
-
-import Pizza from "@/components/Pizza/Pizza";
+import Pizza from "@/components/Card/Card";
 import { useGetPizzasQuery } from "@/redux/api/pizzaApi";
 
 export type PizzaType = {
@@ -16,7 +15,9 @@ export default function Home() {
   return (
     <div className="bg-gray-50 min-h-screen flex items-center justify-center">
       <main className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 place-items-center p-4">
-        {pizzaData?.map(p => <Pizza key={p.id} pizzaData={p} />)}
+        {pizzaData?.map((p) => (
+          <Pizza key={p.id} pizzaData={p} />
+        ))}
       </main>
     </div>
   );
