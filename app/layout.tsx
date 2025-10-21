@@ -1,7 +1,12 @@
-import "./globals.css";
+import "../styles/globals.css";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
-import { ModalProvider } from "@/components/Modal/ModalContext";
+import ReduxProvider from "@/redux/ReduxProvider";
+
+export const metadata = {
+  title: "Pizza Order App",
+  description: "Full stack web app",
+};
 
 export default function RootLayout({
   children,
@@ -11,11 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ModalProvider>
+        <ReduxProvider>
           <Header />
           {children}
           <Footer />
-        </ModalProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

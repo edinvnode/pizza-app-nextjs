@@ -1,9 +1,11 @@
 "use client";
 import Image from "next/image";
+import Modal from "@/components/Modal/Modal";
 import { useRef } from "react";
 import { PizzaType } from "@/app/page";
-import Modal from "@/components/Modal/Modal";
-import { useModal } from "./Modal/ModalContext";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "../../redux/store";
+import { pizzaDetails, closeModal } from "@/redux/slices/modalSlice";
 
 type PropType = {
   pizzaData: PizzaType;
@@ -11,7 +13,9 @@ type PropType = {
 
 const Pizza: React.FC<PropType> = ({ pizzaData }) => {
   const divRef = useRef<HTMLDivElement | null>(null);
-  const { modalType, open, close } = useModal();
+
+  const modalType = useSelector((state: RootState) => state.modalType.value);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleBorder = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!divRef.current) return;
@@ -28,21 +32,22 @@ const Pizza: React.FC<PropType> = ({ pizzaData }) => {
       onMouseOut={handleBorder}
     >
       <Image
-        className="ml-3"
-        width={250}
-        height={250}
         src={pizzaData.image as string}
         alt={pizzaData.name}
-        style={{ width: '250px', height: '250px', objectFit: 'cover' }}
+        width={250}
+        height={250}
       />
       <button
         className="absolute left-2/5 cursor-pointer"
-        onClick={() => open("pizzaDetails")}
+        onClick={() => dispatch(pizzaDetails())}
       >
         View More
       </button>
 
-      <Modal isModalOpen={modalType === "pizzaDetails"} closeModal={close}>
+      <Modal
+        isModalOpen={modalType === "pizzaDetails"}
+        closeModal={() => dispatch(closeModal())}
+      >
         <p>
           <strong>Name: </strong>
           {pizzaData?.name ?? "Pizza"}

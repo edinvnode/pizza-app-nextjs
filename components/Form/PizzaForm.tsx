@@ -1,5 +1,7 @@
 import { useState, FormEvent, ChangeEvent } from "react";
-import { useModal } from "../Modal/ModalContext";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { closeModal } from "@/redux/slices/modalSlice";
 
 interface FormData {
   name: string;
@@ -8,7 +10,7 @@ interface FormData {
 }
 
 export default function PizzaForm() {
-  const { close } = useModal();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -20,7 +22,7 @@ export default function PizzaForm() {
     const { name, value, files, type } = e.target;
     setFormData({
       ...formData,
-      [name]: type === "file" ? (files?.[0] ?? "") : value,
+      [name]: type === "file" ? files?.[0] ?? "" : value,
     });
   };
 
@@ -36,7 +38,7 @@ export default function PizzaForm() {
     );
     response = await response.json();
 
-    close();
+    dispatch(closeModal());
   };
 
   return (
@@ -90,7 +92,11 @@ export default function PizzaForm() {
 
       <button
         type="submit"
-        className={`bg-[#1B2533] text-white px-4 py-2 rounded ${!formData.name || !formData.price || !formData.image ? "bg-gray-400 cursor-not-allowed" : "bg-[#1B2533]"}`}
+        className={`bg-[#1B2533] text-white px-4 py-2 rounded ${
+          !formData.name || !formData.price || !formData.image
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-[#1B2533]"
+        }`}
         disabled={!formData.name || !formData.price || !formData.image}
       >
         Submit
