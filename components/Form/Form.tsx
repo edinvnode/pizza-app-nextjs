@@ -1,7 +1,4 @@
-import { useState, FormEvent, ChangeEvent } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../redux/store";
-import { closeModal } from "@/redux/slices/modalSlice";
+import { useState, useRef, FormEvent, ChangeEvent } from "react";
 
 interface FormData {
   name: string;
@@ -10,13 +7,15 @@ interface FormData {
 }
 
 export default function PizzaForm() {
-  const dispatch = useDispatch<AppDispatch>();
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
     price: 0.0,
     image: "",
   });
+
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, files, type } = e.target;
@@ -29,16 +28,29 @@ export default function PizzaForm() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/pizzas`,
-      {
-        method: "POST",
-        body: JSON.stringify(formData),
-      }
-    );
-    response = await response.json();
+    try {
+      setSubmitting(true);
 
-    dispatch(closeModal());
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/pizzas`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+    } catch (e) {
+      console.error("Error submitting form:", e);
+    } finally {
+      setTimeout(() => {
+        setSubmitting(false);
+        alert("New pizza added!");
+        setFormData({ name: "", price: 0.0, image: "" });
+        if (fileInputRef.current) fileInputRef.current.value = "";
+      }, 1000);
+    }
   };
 
   return (
@@ -84,6 +96,7 @@ export default function PizzaForm() {
           type="file"
           name="image"
           onChange={handleChange}
+          ref={fileInputRef}
           className="border rounded p-2 w-full"
           id="image"
           required
@@ -92,15 +105,11 @@ export default function PizzaForm() {
 
       <button
         type="submit"
-        className={`bg-[#1B2533] text-white px-4 py-2 rounded ${
-          !formData.name || !formData.price || !formData.image
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-[#1B2533]"
-        }`}
-        disabled={!formData.name || !formData.price || !formData.image}
+        disabled={!formData.name || !formData.price || !formData.image || submitting}
+        className="px-4 py-2 rounded text-white bg-[#1B2533] hover:bg-[#2a3546] disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
       >
-        Submit
-      </button>
+        {submitting ? "Submitting..." : "Submit"}
+    </button>
     </form>
   );
 }
