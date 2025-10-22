@@ -1,4 +1,4 @@
-import { pizzas } from "@/data/pizzas";
+import pizzas from "@/data/pizzas.json";
 
 export async function GET() {
   return new Response(JSON.stringify(pizzas), {
