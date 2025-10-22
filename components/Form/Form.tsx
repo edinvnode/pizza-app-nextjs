@@ -7,7 +7,6 @@ interface FormData {
 }
 
 export default function PizzaForm() {
-
   const [formData, setFormData] = useState<FormData>({
     name: "",
     price: 0.0,
@@ -27,29 +26,27 @@ export default function PizzaForm() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSubmitting(true);
 
     try {
-      setSubmitting(true);
-
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/pizzas`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-    } catch (e) {
-      console.error("Error submitting form:", e);
-    } finally {
+      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/pizzas`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
       setTimeout(() => {
-        setSubmitting(false);
-        alert("New pizza added!");
         setFormData({ name: "", price: 0.0, image: "" });
         if (fileInputRef.current) fileInputRef.current.value = "";
+        alert("New pizza added!");
+        setSubmitting(false);
       }, 1000);
+    } catch (e) {
+      console.error("Error submitting form:", e);
+      console.error(
+        `Failed to add pizza: ${e instanceof Error ? e.message : e}`
+      );
     }
   };
 
@@ -73,7 +70,7 @@ export default function PizzaForm() {
 
       <div>
         <label htmlFor="price" className="block">
-          Price:
+          Price (BAM):
         </label>
         <input
           type="number"
@@ -82,7 +79,7 @@ export default function PizzaForm() {
           onChange={handleChange}
           className="border rounded p-2 w-full"
           id="price"
-          min="0"
+          min="1"
           step="0.01"
           required
         />
@@ -105,11 +102,11 @@ export default function PizzaForm() {
 
       <button
         type="submit"
-        disabled={!formData.name || !formData.price || !formData.image || submitting}
+        disabled={submitting}
         className="px-4 py-2 rounded text-white bg-[#1B2533] hover:bg-[#2a3546] disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
       >
         {submitting ? "Submitting..." : "Submit"}
-    </button>
+      </button>
     </form>
   );
 }
