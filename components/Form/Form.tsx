@@ -1,4 +1,7 @@
-import { useState, useRef, FormEvent, ChangeEvent } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { closeModal } from "@/redux/slices/modalSlice";
 
 interface FormData {
   name: string;
@@ -7,14 +10,13 @@ interface FormData {
 }
 
 export default function PizzaForm() {
+  const dispatch = useDispatch<AppDispatch>();
+
   const [formData, setFormData] = useState<FormData>({
     name: "",
     price: 0.0,
     image: "",
   });
-
-  const [submitting, setSubmitting] = useState<boolean>(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, files, type } = e.target;
@@ -26,28 +28,17 @@ export default function PizzaForm() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitting(true);
 
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/pizzas`, {
+    let response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/pizzas`,
+      {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(formData),
-      });
-      setTimeout(() => {
-        setFormData({ name: "", price: 0.0, image: "" });
-        if (fileInputRef.current) fileInputRef.current.value = "";
-        alert("New pizza added!");
-        setSubmitting(false);
-      }, 1000);
-    } catch (e) {
-      console.error("Error submitting form:", e);
-      console.error(
-        `Failed to add pizza: ${e instanceof Error ? e.message : e}`
-      );
-    }
+      }
+    );
+    response = await response.json();
+
+    dispatch(closeModal());
   };
 
   return (
@@ -70,7 +61,7 @@ export default function PizzaForm() {
 
       <div>
         <label htmlFor="price" className="block">
-          Price (BAM):
+          Price:
         </label>
         <input
           type="number"
@@ -79,7 +70,7 @@ export default function PizzaForm() {
           onChange={handleChange}
           className="border rounded p-2 w-full"
           id="price"
-          min="1"
+          min="0"
           step="0.01"
           required
         />
@@ -93,7 +84,6 @@ export default function PizzaForm() {
           type="file"
           name="image"
           onChange={handleChange}
-          ref={fileInputRef}
           className="border rounded p-2 w-full"
           id="image"
           required
@@ -102,10 +92,14 @@ export default function PizzaForm() {
 
       <button
         type="submit"
-        disabled={submitting}
-        className="px-4 py-2 rounded text-white bg-[#1B2533] hover:bg-[#2a3546] disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
+        className={`bg-[#1B2533] text-white px-4 py-2 rounded ${
+          !formData.name || !formData.price || !formData.image
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-[#1B2533]"
+        }`}
+        disabled={!formData.name || !formData.price || !formData.image}
       >
-        {submitting ? "Submitting..." : "Submit"}
+        Submit
       </button>
     </form>
   );

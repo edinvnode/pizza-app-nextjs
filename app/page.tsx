@@ -10,7 +10,9 @@ export type PizzaType = {
 };
 
 export default function Home() {
-  const { data: pizzaData } = useGetPizzasQuery();
+  const { data: pizzaData, isLoading } = useGetPizzasQuery();
+
+  if (isLoading) return <h1 className="text-9xl">Loading</h1>
 
   return (
     <div className="bg-gray-50 min-h-screen flex items-center justify-center">
