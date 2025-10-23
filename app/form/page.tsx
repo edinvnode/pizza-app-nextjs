@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 
 interface PizzaProps {
   name: string;
@@ -9,12 +9,6 @@ interface PizzaProps {
 }
 
 export default function PizzaForm() {
-  /*
-  const [pizzaName, setPizzaName] = useState('');
-  const [pizzaPrice, setPizzaPrice] = useState<number>(0);
-  const [imageFile, setImageFile] = useState('');
-  */
-
   const [formData, setFormData] = useState<PizzaProps>({
     name: '',
     price: 0.0,
@@ -30,6 +24,14 @@ export default function PizzaForm() {
   };
 
   const isDisabled = !formData.name || !formData.price || !formData.image;
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    alert(formData.name);
+    alert(formData.price);
+    alert(formData.image);
+  };
 
   return (
     <div className="h-screen flex justify-center items-center bg-gray-100">
@@ -71,6 +73,7 @@ export default function PizzaForm() {
               ? 'bg-gray-400 cursor-not-allowed'
               : 'bg-blue-500 hover:bg-blue-600 text-white'
           }`}
+          onClick={handleSubmit}
         >
           Submit
         </button>
