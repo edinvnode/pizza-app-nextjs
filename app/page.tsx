@@ -22,7 +22,6 @@ const Overlay = ({ children }: OverlayProps) => (
 
 export default function Home() {
   const { data: pizzaData, isLoading, isError } = useGetPizzasQuery();
-
   if (isLoading || isError) {
     return (
       <Overlay>

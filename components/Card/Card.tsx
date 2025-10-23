@@ -13,7 +13,6 @@ type PropType = {
  
 const Card: React.FC<PropType> = ({ pizzaData }) => {
   const divRef = useRef<HTMLDivElement | null>(null);
- 
   const modalType = useSelector((state: RootState) => state.modalType.value);
   const dispatch = useDispatch<AppDispatch>();
  
