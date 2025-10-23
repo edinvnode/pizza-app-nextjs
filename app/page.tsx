@@ -10,27 +10,31 @@ export type PizzaType = {
   image: string;
 };
 
-const LoadingOverlay = ({ size = 350 }: { size?: number }) => (
-  <div className="fixed inset-0 flex justify-center items-center bg-gray-100 bg-opacity-50 z-50">
-    <Spinner size={size} />
-  </div>
-);
+type OverlayProps = {
+  children: React.ReactNode;
+};
 
-const ErrorOverlay = ({
-  message = "Error fetching Pizzas",
-}: {
-  message?: string;
-}) => (
+const Overlay = ({ children }: OverlayProps) => (
   <div className="fixed inset-0 flex justify-center items-center bg-gray-100 bg-opacity-50 z-50">
-    <h1 className="text-red-500 text-6xl text-center">{message}</h1>
+    {children}
   </div>
 );
 
 export default function Home() {
   const { data: pizzaData, isLoading, isError } = useGetPizzasQuery();
 
-  if (isError) return <ErrorOverlay />;
-  if (isLoading) return <LoadingOverlay />;
+  if (isLoading || isError) {
+    return (
+      <Overlay>
+        {isLoading && <Spinner size={350} />}
+        {isError && (
+          <h1 className="text-red-500 text-6xl text-center">
+            Error fetching pizzas
+          </h1>
+        )}
+      </Overlay>
+    );
+  }
 
   return (
     <div className="bg-gray-50 min-h-screen flex items-center justify-center">
