@@ -1,5 +1,6 @@
 "use client";
 import Card from "@/components/Card/Card";
+import Spinner from "@/components/Spinner/Spinner";
 import { useGetPizzasQuery } from "@/redux/api/pizzaApi";
 
 export type PizzaType = {
@@ -12,7 +13,13 @@ export type PizzaType = {
 export default function Home() {
   const { data: pizzaData, isLoading } = useGetPizzasQuery();
 
-  if (isLoading) return <h1 className="text-9xl">Loading</h1>
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 flex justify-center items-center bg-gray-100 bg-opacity-50">
+        <Spinner size={350} />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-50 min-h-screen flex items-center justify-center">
