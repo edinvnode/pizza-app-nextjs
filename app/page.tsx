@@ -8,6 +8,7 @@ export type PizzaType = {
   name: string;
   price: number;
   image: string;
+  createdAt: Date;
 };
 
 type OverlayProps = {

@@ -6,15 +6,16 @@ import { PizzaType } from "@/app/page";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../redux/store";
 import { pizzaDetails, closeModal } from "@/redux/slices/modalSlice";
- 
+
 type PropType = {
   pizzaData: PizzaType;
 };
- 
+
 const Card: React.FC<PropType> = ({ pizzaData }) => {
   const divRef = useRef<HTMLDivElement | null>(null);
   const modalType = useSelector((state: RootState) => state.modalType);
   const dispatch = useDispatch<AppDispatch>();
+  const createdAt = new Date(modalType.selectedPizza?.createdAt ?? new Date());
 
   const handleBorder = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!divRef.current) return;
@@ -42,7 +43,7 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
       >
         View More
       </button>
- 
+
       <Modal
         isModalOpen={modalType.value === "pizzaDetails"}
         closeModal={() => dispatch(closeModal())}
@@ -53,8 +54,16 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
         </p>
         <hr />
         <p className="mt-2">
-          <strong>Price: </strong>
-          ${modalType.selectedPizza?.price ?? "Price"}
+          <strong>Price: </strong>${modalType.selectedPizza?.price ?? "Price"}
+        </p>
+        <hr />
+        <p className="mt-2">
+          <strong>Date: </strong>
+          {createdAt?.toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          }) ?? "Date"}
         </p>
         <hr />
         <p className="mt-2">
@@ -65,5 +74,5 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
     </div>
   );
 };
- 
+
 export default Card;
