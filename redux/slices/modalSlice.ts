@@ -1,25 +1,31 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction  } from "@reduxjs/toolkit";
+import { PizzaType } from "@/app/page";
 
 interface ModalType {
   value: string | null;
+  selectedPizza?: PizzaType;
 }
 
 const initialState: ModalType = {
   value: null,
+  selectedPizza: undefined,
 };
 
 const modalSlice = createSlice({
   name: "modalType",
   initialState,
   reducers: {
-    pizzaOrder: (state) => {
+    pizzaOrder: (state, action: PayloadAction<PizzaType | undefined>) => {
       state.value = "pizzaOrder";
+      state.selectedPizza = action.payload;
     },
-    pizzaDetails: (state) => {
+    pizzaDetails: (state, action: PayloadAction<PizzaType | undefined>) => {
       state.value = "pizzaDetails";
+      state.selectedPizza = action.payload;
     },
     closeModal: (state) => {
       state.value = initialState.value;
+      state.selectedPizza = undefined;
     },
   },
 });
