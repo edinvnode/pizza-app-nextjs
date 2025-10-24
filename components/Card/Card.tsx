@@ -13,10 +13,9 @@ type PropType = {
  
 const Card: React.FC<PropType> = ({ pizzaData }) => {
   const divRef = useRef<HTMLDivElement | null>(null);
-  const modalType = useSelector((state: RootState) => state.modalType.value);
+  const modalType = useSelector((state: RootState) => state.modalType);
   const dispatch = useDispatch<AppDispatch>();
-  const modalState = useSelector((state: RootState) => state.modalType);
- 
+
   const handleBorder = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!divRef.current) return;
     e.type === "mouseover"
@@ -45,17 +44,17 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
       </button>
  
       <Modal
-        isModalOpen={modalState.value === "pizzaDetails"}
+        isModalOpen={modalType.value === "pizzaDetails"}
         closeModal={() => dispatch(closeModal())}
       >
         <p>
           <strong>Name: </strong>
-          {modalState.selectedPizza?.name ?? "Pizza"}
+          {modalType.selectedPizza?.name ?? "Pizza"}
         </p>
         <hr />
         <p className="mt-2">
           <strong>Price: </strong>
-          {modalState.selectedPizza?.price ?? "Price"}
+          ${modalType.selectedPizza?.price ?? "Price"}
         </p>
         <hr />
         <p className="mt-2">

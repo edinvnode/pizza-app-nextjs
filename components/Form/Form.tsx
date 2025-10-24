@@ -27,14 +27,16 @@ export default function PizzaForm() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
+    if (!formData.image || !(formData.image instanceof File)) return;
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("price", formData.price.toString());
+    data.append("file", formData.image);
 
     try {
       await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/pizzas`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+        body: data
       });
       setTimeout(() => {
         setFormData({ name: "", price: 0.0, image: "" });
