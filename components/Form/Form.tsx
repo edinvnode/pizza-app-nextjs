@@ -1,4 +1,5 @@
 import { useState, useRef, FormEvent, ChangeEvent } from "react";
+import { useAddPizzaMutation } from "@/redux/api/pizzaApi";
 
 interface FormData {
   name: string;
@@ -15,6 +16,8 @@ export default function PizzaForm() {
 
   const [submitting, setSubmitting] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const numberRef = useRef<HTMLInputElement>(null);
+  const [addPizza] = useAddPizzaMutation();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, files, type } = e.target;
@@ -34,14 +37,10 @@ export default function PizzaForm() {
     data.append("file", formData.image);
 
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/pizzas`, {
-        method: "POST",
-        body: data
-      });
+      await addPizza(data).unwrap();
       setTimeout(() => {
         setFormData({ name: "", price: 0.0, image: "" });
         if (fileInputRef.current) fileInputRef.current.value = "";
-        alert("New pizza added!");
         setSubmitting(false);
       }, 1000);
     } catch (e) {
@@ -79,9 +78,11 @@ export default function PizzaForm() {
           name="price"
           value={formData.price}
           onChange={handleChange}
+          ref={numberRef}
           className="border rounded p-2 w-full"
           id="price"
           min="1"
+          max="200"
           step="0.01"
           required
         />
@@ -104,8 +105,12 @@ export default function PizzaForm() {
 
       <button
         type="submit"
-        disabled={submitting}
-        className="px-4 py-2 rounded text-white bg-[#1B2533] hover:bg-[#2a3546] disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
+        className={`bg-[#1B2533] text-white px-4 py-2 rounded ${
+          !formData.name || !formData.price || !formData.image || submitting
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-[#1B2533]"
+        }`}
+        disabled={!formData.name || !formData.price || !formData.image}
       >
         {submitting ? "Submitting..." : "Submit"}
       </button>

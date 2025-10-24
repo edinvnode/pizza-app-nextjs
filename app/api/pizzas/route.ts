@@ -40,6 +40,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(pizza);
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 }
+    );
   }
 }
