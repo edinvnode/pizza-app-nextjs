@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
-    "start": "next start"
+    "start": "next start",
+    "test": "jest --watch"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.9.1",
@@ -17,11 +18,18 @@
     "react-redux": "^9.2.0"
   },
   "devDependencies": {
+    "@prisma/client": "^6.18.0",
     "@tailwindcss/postcss": "^4.1.14",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "prisma": "^6.18.0",
     "tailwindcss": "^4.1.14",
+    "ts-jest": "^29.4.5",
     "typescript": "^5.9.3"
   }
 }

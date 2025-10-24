@@ -6,7 +6,7 @@ import { useGetPizzasQuery } from "@/redux/api/pizzaApi";
 export type PizzaType = {
   id: number;
   name: string;
-  price: string;
+  price: number;
   image: string;
 };
 
@@ -22,7 +22,6 @@ const Overlay = ({ children }: OverlayProps) => (
 
 export default function Home() {
   const { data: pizzaData, isLoading, isError } = useGetPizzasQuery();
-
   if (isLoading || isError) {
     return (
       <Overlay>
