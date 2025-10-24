@@ -16,6 +16,7 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
  
   const modalType = useSelector((state: RootState) => state.modalType.value);
   const dispatch = useDispatch<AppDispatch>();
+  const modalState = useSelector((state: RootState) => state.modalType);
  
   const handleBorder = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!divRef.current) return;
@@ -23,7 +24,7 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
       ? (divRef.current.style.border = "2px solid grey")
       : (divRef.current.style.border = "2px solid transparent");
   };
- 
+
   return (
     <div
       className="border p-7 shadow-2xl relative"
@@ -39,23 +40,23 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
       />
       <button
         className="absolute left-2/5 cursor-pointer"
-        onClick={() => dispatch(pizzaDetails())}
+        onClick={() => dispatch(pizzaDetails(pizzaData))}
       >
         View More
       </button>
  
       <Modal
-        isModalOpen={modalType === "pizzaDetails"}
+        isModalOpen={modalState.value === "pizzaDetails"}
         closeModal={() => dispatch(closeModal())}
       >
         <p>
           <strong>Name: </strong>
-          {pizzaData?.name ?? "Pizza"}
+          {modalState.selectedPizza?.name ?? "Pizza"}
         </p>
         <hr />
         <p className="mt-2">
           <strong>Price: </strong>
-          {pizzaData?.price ?? "Price"}
+          {modalState.selectedPizza?.price ?? "Price"}
         </p>
         <hr />
         <p className="mt-2">
