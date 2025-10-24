@@ -28,9 +28,9 @@ export default function PizzaForm() {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    alert(formData.name);
-    alert(formData.price);
-    alert(formData.image);
+    console.log(formData.name);
+    console.log((formData.price);
+    console.log((formData.image);
   };
 
   return (
