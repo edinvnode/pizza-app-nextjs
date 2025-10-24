@@ -7,7 +7,9 @@ const prisma = new PrismaClient();
 
 export async function GET() {
   try {
-    const pizzas = await prisma.pizza.findMany();
+    const pizzas = await prisma.pizza.findMany({
+      orderBy: { createdAt: "desc" },
+    });
     return NextResponse.json(pizzas);
   } catch (error) {
     console.error(error);

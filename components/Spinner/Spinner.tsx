@@ -8,7 +8,7 @@ const Spinner = ({ size }: SpinnerProps) => {
   return (
     <div className="flex justify-center items-center">
 <svg
-  data-testid="spinner-svg" // add this
+  data-testid="spinner-svg"
   className="animate-spin"
   width={size ?? 300}
   height={size ?? 300}

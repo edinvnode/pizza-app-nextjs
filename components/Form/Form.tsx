@@ -1,5 +1,6 @@
 import { useState, useRef, FormEvent, ChangeEvent } from "react";
 import { useAddPizzaMutation } from "@/redux/api/pizzaApi";
+import Spinner from "../Spinner/Spinner";
 
 interface FormData {
   name: string;
@@ -105,14 +106,14 @@ export default function PizzaForm() {
 
       <button
         type="submit"
-        className={`bg-[#1B2533] text-white px-4 py-2 rounded ${
+        className={`bg-[#1B2533] text-white px-4 py-2 rounded w-32 h-12 ${
           !formData.name || !formData.price || !formData.image || submitting
             ? "bg-gray-400 cursor-not-allowed"
-            : "bg-[#1B2533]"
+            : "bg-[#1B2533] cursor-pointer"
         }`}
         disabled={!formData.name || !formData.price || !formData.image}
       >
-        {submitting ? "Submitting..." : "Submit"}
+        {submitting ? <Spinner size={30} /> : "Submit"}
       </button>
     </form>
   );
