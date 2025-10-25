@@ -52,6 +52,13 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
       </button>
 
       <button
+        className="absolute left-1/2 cursor-pointer"
+        onClick={() => alert(pizzaData.id)}
+      >
+        Edit
+      </button>
+
+      <button
         className="absolute right-1/8 cursor-pointer"
         onClick={async () => {
           try {
@@ -67,6 +74,7 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
       <Modal
         isModalOpen={modalType.value === "pizzaDetails"}
         closeModal={() => dispatch(closeModal())}
+        title="Pizza Details"
       >
         <p>
           <strong>Name: </strong>
