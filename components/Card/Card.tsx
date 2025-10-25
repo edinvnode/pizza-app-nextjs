@@ -6,6 +6,8 @@ import { PizzaType } from "@/app/page";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../redux/store";
 import { pizzaDetails, closeModal } from "@/redux/slices/modalSlice";
+import { useDeletePizzaMutation } from "@/redux/api/pizzaApi";
+import Spinner from "../Spinner/Spinner";
 
 type PropType = {
   pizzaData: PizzaType;
@@ -16,6 +18,7 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
   const modalType = useSelector((state: RootState) => state.modalType);
   const dispatch = useDispatch<AppDispatch>();
   const createdAt = new Date(modalType.selectedPizza?.createdAt ?? new Date());
+  const [deletePizza, { isLoading: isDeleting }] = useDeletePizzaMutation();
 
   const handleBorder = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!divRef.current) return;
@@ -31,17 +34,34 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
       onMouseOver={handleBorder}
       onMouseOut={handleBorder}
     >
-      <Image
-        src={pizzaData.image as string}
-        alt={pizzaData.name}
-        width={250}
-        height={250}
-      />
+      {!isDeleting ? (
+        <Image
+          src={pizzaData.image as string}
+          alt={pizzaData.name}
+          width={250}
+          height={250}
+        />
+      ) : (
+        <Spinner size={200} />
+      )}
       <button
-        className="absolute left-2/5 cursor-pointer"
+        className="absolute left-1/8 cursor-pointer"
         onClick={() => dispatch(pizzaDetails(pizzaData))}
       >
         View More
+      </button>
+
+      <button
+        className="absolute right-1/8 cursor-pointer"
+        onClick={async () => {
+          try {
+            await deletePizza(String(pizzaData?.id)).unwrap();
+          } catch (error) {
+            console.log(error);
+          }
+        }}
+      >
+        Delete
       </button>
 
       <Modal
