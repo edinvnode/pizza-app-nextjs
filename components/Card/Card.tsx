@@ -55,7 +55,7 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
         className="absolute right-1/8 cursor-pointer"
         onClick={async () => {
           try {
-            await deletePizza(String(pizzaData?.id)).unwrap();
+            await deletePizza(pizzaData?.id).unwrap();
           } catch (error) {
             console.log(error);
           }
