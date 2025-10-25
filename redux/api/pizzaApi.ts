@@ -18,7 +18,18 @@ export const pizzaApi = createApi({
       }),
       invalidatesTags: ["Pizza"],
     }),
+    deletePizza: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/api/pizzas/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Pizza"],
+    }),
   }),
 });
 
-export const { useGetPizzasQuery, useAddPizzaMutation } = pizzaApi;
+export const {
+  useGetPizzasQuery,
+  useAddPizzaMutation,
+  useDeletePizzaMutation,
+} = pizzaApi;

@@ -1,21 +1,21 @@
 import React from "react";
 
 interface SpinnerProps {
-  size?: number; 
+  size?: number;
 }
 
 const Spinner = ({ size }: SpinnerProps) => {
   return (
     <div className="flex justify-center items-center">
-<svg
-  data-testid="spinner-svg"
-  className="animate-spin"
-  width={size ?? 300}
-  height={size ?? 300}
-  viewBox="0 0 100 100"
-  fill="none"
-  xmlns="http://www.w3.org/2000/svg"
->
+      <svg
+        data-testid="spinner-svg"
+        className="animate-spin"
+        width={size ?? 300}
+        height={size ?? 300}
+        viewBox="0 0 100 100"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <circle
           cx="50"
           cy="50"
