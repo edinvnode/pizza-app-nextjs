@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { saveFile } from "./fileupload";
+import { saveFile } from "./utils/fileupload";
 
 const prisma = new PrismaClient();
 

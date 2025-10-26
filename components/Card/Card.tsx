@@ -36,12 +36,11 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
     >
       {!isDeleting ? (
         <Image
-       src={`${pizzaData.image}?v=${pizzaData.createdAt || Date.now()}`}
-        alt={pizzaData.name}
-        width={250}
-        height={250}
-        key={pizzaData.image} // <-- forces React to rerender when image changes
-      />
+          src={pizzaData.image}
+          alt={pizzaData.name}
+          width={250}
+          height={250}
+        />
       ) : (
         <Spinner size={200} />
       )}

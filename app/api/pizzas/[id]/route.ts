@@ -1,34 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import fs from "fs";
-import path from "path";
-import { saveFile } from "../fileupload";
+import { saveFile } from "../utils/fileupload";
 
 const prisma = new PrismaClient();
-
-export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
-  const { id } = await context.params;
-
-  const pizzaId = parseInt(id);
-  if (isNaN(pizzaId)) {
-    return NextResponse.json({ error: "Invalid pizza ID" }, { status: 400 });
-  }
-
-  try {
-    const pizza = await prisma.pizza.delete({
-      where: { id: pizzaId },
-    });
-    return NextResponse.json(pizza, { status: 200 });
-  } catch (error: any) {
-    if (error.code === "P2025") {
-      return NextResponse.json({ error: "Pizza not found" }, { status: 404 });
-    }
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
-  }
-}
 
 export async function PUT(
   req: NextRequest,
@@ -64,19 +38,16 @@ export async function PUT(
       return NextResponse.json({ error: "Pizza not found" }, { status: 404 });
     }
 
-    // keep current image by default
     let imagePath = existingPizza.image;
 
-    // ✅ only save new file if provided (no deletion)
     if (file) {
       const ext = file.name.split(".").pop();
       const uniqueName = `${Date.now()}.${ext}`;
       const newFile = new File([file], uniqueName, { type: file.type });
 
-      imagePath = await saveFile(newFile); // just save, don't delete old
+      imagePath = await saveFile(newFile);
     }
 
-    // ✅ update database
     const updatedPizza = await prisma.pizza.update({
       where: { id: pizzaId },
       data: {
@@ -92,6 +63,36 @@ export async function PUT(
     });
   } catch (err) {
     console.error("Error updating pizza:", err);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await context.params;
+
+  const pizzaId = parseInt(id);
+  if (isNaN(pizzaId)) {
+    return NextResponse.json({ error: "Invalid pizza ID" }, { status: 400 });
+  }
+
+  try {
+    const pizza = await prisma.pizza.delete({
+      where: { id: pizzaId },
+    });
+    return NextResponse.json(pizza, { status: 200 });
+  } catch (error: any) {
+    if (error.code === "P2025") {
+      return NextResponse.json({ error: "Pizza not found" }, { status: 404 });
+    }
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
