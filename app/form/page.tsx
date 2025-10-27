@@ -29,8 +29,8 @@ export default function PizzaForm() {
     e.preventDefault();
 
     console.log(formData.name);
-    console.log((formData.price);
-    console.log((formData.image);
+    console.log(formData.price);
+    console.log(formData.image);
   };
 
   return (
