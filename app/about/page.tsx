@@ -61,13 +61,11 @@ export default function About() {
         </div>
         <div className="my-10 mx-auto">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509374!2d144.95373531531695!3d-37.8162797797517!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf5778b3a0bcb14e1!2sFederation%20Square!5e0!3m2!1sen!2sau!4v1697055980000!5m2!1sen!2sau"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2877.1530003242683!2d18.396102176187384!3d43.852657371093215!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4758c9692463b1cb%3A0x4125c306e5d62a6d!2sInternational%20Center%20for%20Children%20and%20Youth%20Novo%20Sarajevo!5e0!3m2!1sen!2sba!4v1761684784737!5m2!1sen!2sba"
             width="600"
             height="450"
             style={{ border: '0' }}
-            allowFullScreen=""
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
           ></iframe>
         </div>
         <div className="w-screen h-10 m-10 flex justify-center flex-col items-center">

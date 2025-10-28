@@ -17,7 +17,7 @@ export default function Contact() {
     formData.lastName === '' ||
     formData.message === '';
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -38,6 +38,7 @@ export default function Contact() {
     - Uraditi disable button ukoliko validacija nije prosle i obojiti ga u sivo
     - Kontakt formu poslati na mail - istraziti node.js mailer
     - Iskoristiti postojecu komponentu Formu
+    - Istraziti biblioteku za forme pod imenom Formik i slicno
   */
 
   return (
