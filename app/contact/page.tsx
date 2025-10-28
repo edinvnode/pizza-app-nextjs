@@ -11,47 +11,39 @@ export default function Contact() {
     message: '',
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-
-    if (
-      formData.firstName.trim() === '' ||
-      formData.lastName.trim() === '' ||
-      formData.email.trim() === '' ||
-      formData.message.trim() === ''
-    ) {
-      setErrorMessage('Error. Please fill in all the required fields.');
-    } else {
-      setErrorMessage('');
-    }
-
-    console.log(formData);
-  };
-
-  /*
-    - Uraditi disable button ukoliko validacija nije prosle i obojiti ga u sivo
-    - Kontakt formu poslati na mail - istraziti node.js mailer
-
-  */
-
   const isDisabled =
     formData.email === '' ||
     formData.firstName === '' ||
     formData.lastName === '' ||
     formData.message === '';
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+    isDisabled
+      ? setErrorMessage('⚠️ Please fill in the required fields.')
+      : setErrorMessage('🚀 Form ready to submit.');
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    console.log(formData);
+    alert('Form submitted!');
+  };
+
+  /*
+    - Uraditi disable button ukoliko validacija nije prosle i obojiti ga u sivo
+    - Kontakt formu poslati na mail - istraziti node.js mailer
+    - Iskoristiti postojecu komponentu Formu
+  */
+
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-gray-200">
       <form
-        className="flex flex-col border-2 rounded-md p-2 w-60"
+        className="flex flex-col border-2 rounded-md p-2 w-70"
         onSubmit={handleSubmit}
       >
         <label className="mx-2">First Name:</label>
@@ -96,7 +88,13 @@ export default function Contact() {
         >
           Submit
         </button>
-        <p className="text-red-500">{errorMessage}</p>
+        <p
+          className={`text-center ${
+            isDisabled ? 'text-red-500' : 'text-green-500'
+          }`}
+        >
+          {errorMessage}
+        </p>
       </form>
     </div>
   );
