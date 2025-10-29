@@ -11,6 +11,7 @@ export default function Header() {
 
   return (
     <header className="bg-gray-800 text-white text-center p-4 text-4xl">
+  
       <button
         className="relative left-2/5 cursor-pointer"
         onClick={() => dispatch(pizzaOrder())}

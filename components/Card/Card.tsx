@@ -34,6 +34,8 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
       onMouseOver={handleBorder}
       onMouseOut={handleBorder}
     >
+      <b>{pizzaData.name}</b>
+      <b>{pizzaData.price}</b>
       {!isDeleting ? (
         <Image
           src={pizzaData.image}
