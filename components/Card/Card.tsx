@@ -34,8 +34,6 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
       onMouseOver={handleBorder}
       onMouseOut={handleBorder}
     >
-      <b>{pizzaData.name}</b>
-      <b>{pizzaData.price}</b>
       {!isDeleting ? (
         <Image
           src={pizzaData.image}
@@ -62,13 +60,7 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
 
       <button
         className="absolute right-1/8 cursor-pointer"
-        onClick={async () => {
-          try {
-            await deletePizza(pizzaData?.id).unwrap();
-          } catch (error) {
-            console.log(error);
-          }
-        }}
+        onClick={async () => await deletePizza(pizzaData?.id).unwrap()}
       >
         Delete
       </button>

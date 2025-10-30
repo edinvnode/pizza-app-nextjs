@@ -12,25 +12,25 @@ export default function Sort({ pizzas, onSort }: SortProps) {
     const sortedPizzas = [...pizzas];
 
     switch (value) {
-      case "a-z":
+      case "name-asc":
         sortedPizzas.sort((a, b) => a.name.localeCompare(b.name));
         break;
-      case "z-a":
+      case "name-desc":
         sortedPizzas.sort((a, b) => b.name.localeCompare(a.name));
         break;
-      case "asc":
+      case "price-asc":
         sortedPizzas.sort((a, b) => a.price - b.price);
         break;
-      case "desc":
+      case "price-desc":
         sortedPizzas.sort((a, b) => b.price - a.price);
         break;
-      case "newest":
+      case "date-newest":
         sortedPizzas.sort(
           (a, b) =>
             new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         );
         break;
-      case "oldest":
+      case "date-oldest":
         sortedPizzas.sort(
           (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -45,23 +45,25 @@ export default function Sort({ pizzas, onSort }: SortProps) {
   };
 
   return (
-    <div className="float-left">
-      <label htmlFor="sortBy" className="mr-2 text-white-700 font-medium">
-        Sort by:
-      </label>
+    <>
       <select
         id="sortBy"
         name="sortBy"
-        className="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white text-gray-800 cursor-pointer transition duration-200"
+        className="relative right-2/5 bg-white text-gray-800 font-semibold p-2 
+                  rounded cursor-pointer border-none shadow-md focus:outline-none 
+                  focus:ring-2 focus:ring-gray-400 transition duration-200 text-xl"
         onChange={handleChange}
       >
-        <option value="a-z">Name A-Z</option>
-        <option value="z-a">Name Z-A</option>
-        <option value="asc">Price ASC</option>
-        <option value="desc">Price DESC</option>
-        <option value="newest">Date Newest</option>
-        <option value="oldest">Date Oldest</option>
+        <option value="" disabled selected>
+          Sort by:
+        </option>
+        <option value="name-asc">Name A → Z</option>
+        <option value="name-desc">Name Z → A</option>
+        <option value="price-asc">Price Low → High</option>
+        <option value="price-desc">Price High → Low</option>
+        <option value="date-newest">Newest First</option>
+        <option value="date-oldest">Oldest First</option>
       </select>
-    </div>
+    </>
   );
 }
