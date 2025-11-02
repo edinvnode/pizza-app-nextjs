@@ -28,7 +28,6 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
-    "@types/react-dom": "^19",
     "prisma": "^6.18.0",
     "tailwindcss": "^4.1.14",
     "ts-jest": "^29.4.5",
