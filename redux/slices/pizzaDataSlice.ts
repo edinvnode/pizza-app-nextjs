@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PizzaType } from "@/app/page";
 
@@ -28,34 +27,3 @@ export const pizzaSlice = createSlice({
 
 export const { setPizzaData, setSortedPizzas } = pizzaSlice.actions;
 export default pizzaSlice.reducer;
-=======
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { PizzaType } from "@/app/page";
-
-type PizzaState = {
-  pizzaData: PizzaType[];
-  sortedPizzas: PizzaType[];
-};
-
-const initialState: PizzaState = {
-  pizzaData: [],
-  sortedPizzas: [],
-};
-
-export const pizzaSlice = createSlice({
-  name: "pizzaData",
-  initialState,
-  reducers: {
-    setPizzaData: (state, action: PayloadAction<PizzaType[]>) => {
-      state.pizzaData = action.payload;
-      state.sortedPizzas = action.payload;
-    },
-    setSortedPizzas: (state, action: PayloadAction<PizzaType[]>) => {
-      state.sortedPizzas = action.payload;
-    },
-  },
-});
-
-export const { setPizzaData, setSortedPizzas } = pizzaSlice.actions;
-export default pizzaSlice.reducer;
->>>>>>> 3a987414eb50bb2cdd972783c748cb7773135173

@@ -17,7 +17,11 @@ export default function Contact() {
     formData.lastName === '' ||
     formData.message === '';
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -34,63 +38,109 @@ export default function Contact() {
     alert('Form submitted!');
   };
 
-  /*
-    - Uraditi disable button ukoliko validacija nije prosle i obojiti ga u sivo
-    - Kontakt formu poslati na mail - istraziti node.js mailer
-    - Iskoristiti postojecu komponentu Formu
-    - Istraziti biblioteku za forme pod imenom Formik i slicno
-  */
-
   return (
-    <div className="flex flex-col justify-center items-center h-screen bg-gray-200">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-200 ">
       <form
-        className="flex flex-col border-2 rounded-md p-2 w-70"
+        className="form-styled flex flex-col border-2 rounded-md p-4 w-full max-w-lg bg-white my-3"
         onSubmit={handleSubmit}
       >
-        <label className="mx-2">First Name:</label>
-        <input
-          type="text"
-          className="my-2 mx-2 border-1"
-          name="firstName"
-          onChange={handleChange}
-          value={formData.firstName}
-        />
-        <label className="mx-2">Last Name:</label>
-        <input
-          type="text"
-          className="my-2 mx-2 border-1"
-          name="lastName"
-          onChange={handleChange}
-          value={formData.lastName}
-        />
-        <label className="mx-2">Email:</label>
-        <input
-          type="email"
-          className="my-2 mx-2 border-1"
-          name="email"
-          onChange={handleChange}
-          value={formData.email}
-        />
-        <label className="mx-2">Message:</label>
-        <textarea
-          className="mx-2 my-2 border-1 border-black"
-          name="message"
-          onChange={handleChange}
-          value={formData.message}
-        ></textarea>
+        <label>Tema torte:</label>
+        <select name="wpforms[fields][1]" aria-invalid="false">
+          <option value="Bez naljepnica (0,56eur/kriški)">
+            Bez naljepnica (0,56eur/kriški)
+          </option>
+          <option value="A je to (0,72€/kriški)">A je to (0,72€/kriški)</option>
+          <option value="Ariel mala sirena (0,72€/kriški)">
+            Ariel mala sirena (0,72€/kriški)
+          </option>
+          <option value="Batman (0,72€/kriški)">Batman (0,72€/kriški)</option>
+          {/* ... all your other options ... */}
+          <option value="Uzorak po Vašem izboru (0,72€/kriški)">
+            Uzorak po Vašem izboru (0,72€/kriški)
+          </option>
+        </select>
+
+        <label>Broj kriškica:</label>
+        <select name="brojKriskica" aria-invalid="false">
+          <option value="10">10</option>
+          <option value="12">12</option>
+          <option value="14">14</option>
+          <option value="20">20</option>
+          {/* ...etc... */}
+        </select>
+
+        <label>Boja kriškica:</label>
+        <select name="bojaKriskica">
+          <option value="Šarena - sve boje">Šarena - sve boje</option>
+          <option value="Bijela">Bijela</option>
+          <option value="Žuta">Žuta</option>
+          {/* ...etc... */}
+        </select>
+
+        <label>Boja mašnice:</label>
+        <select name="bojaMasnice">
+          <option value="Crvena">Crvena</option>
+          <option value="Žuta">Žuta</option>
+          {/* ...etc... */}
+        </select>
+
+        <label>Slaganje torte:</label>
+        <select name="slaganjeTorte">
+          <option value="Da (0,08€/kriški)">Da (0,08€/kriški)</option>
+          <option value="Ne">Ne</option>
+        </select>
+
+        <label>Preuzimanje:</label>
+        <select name="wpreuzimanje">
+          <option value="Osobno preuzimanje trgovina Paketić (plaćanje gotovinom)">
+            Osobno preuzimanje trgovina Paketić (plaćanje gotovinom)
+          </option>
+        </select>
+
+        <label>Podaci za dostavu:</label>
+        <textarea name="podaciZaDostavu" />
+
+        <label>E-mail adresa:</label>
+        <input type="email" placeholder="Email adresa" />
+
+        <label>Broj telefona za kontakt:</label>
+        <input type="text" placeholder="Broj telefona:" />
+
+        <label>Datum preuzimanja torte:</label>
+        <div className="text-sm text-gray-600">
+          Datum kada bi došli po tortu ako je osobno preuzimate u trgovini
+          Paketić.
+        </div>
+        <input type="text" name="datumPreuzimanja" />
+
+        <label>Dodatni opis:</label>
+        <textarea name="dodatniOpis" />
+
+        <label>Vrste plaćanja:</label>
+        <select id="wpforms-296-field_18" name="vrstePlacanja">
+          <option value="Kod osobnog preuzimanja">
+            Kod osobnog preuzimanja
+          </option>
+          <option value="Po pouzeću pošiljke">Po pouzeću pošiljke</option>
+          <option value="Transakcijski po ponudi">
+            Transakcijski po ponudi
+          </option>
+        </select>
+
         <button
           type="submit"
-          className={`rounded-lg ${
+          className={`rounded-lg mt-4 py-2 ${
             isDisabled
               ? 'bg-gray-400 cursor-not-allowed'
               : 'bg-blue-500 hover:bg-blue-600 text-white cursor-pointer'
           }`}
           disabled={isDisabled}
         >
-          Submit
+          Pošalji
         </button>
+
         <p
-          className={`text-center ${
+          className={`text-center mt-2 ${
             isDisabled ? 'text-red-500' : 'text-green-500'
           }`}
         >
