@@ -5,7 +5,7 @@ import { FormEvent, useState } from 'react';
 export default function Contact() {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [formData, setFormData] = useState({
-    temaTorte: 'Crvena',
+    temaTorte: '',
     brojKriskica: '',
     bojaKriskica: '',
     bojaMasnice: '',
@@ -61,6 +61,7 @@ export default function Contact() {
           name="temaTorte"
           onChange={handleChange}
         >
+          <option value=""></option>
           <option value="Bez naljepnica (0,56eur/kriški)">
             Bez naljepnica (0,56eur/kriški)
           </option>
@@ -80,6 +81,7 @@ export default function Contact() {
           name="brojKriskica"
           onChange={handleChange}
         >
+          <option value=""></option>
           <option value="10">10</option>
           <option value="12">12</option>
           <option value="14">14</option>
@@ -92,6 +94,7 @@ export default function Contact() {
           name="bojaKriskica"
           onChange={handleChange}
         >
+          <option value=""></option>
           <option value="Šarena - sve boje">Šarena - sve boje</option>
           <option value="Bijela">Bijela</option>
           <option value="Žuta">Žuta</option>
@@ -103,6 +106,7 @@ export default function Contact() {
           name="bojaMasnice"
           onChange={handleChange}
         >
+          <option value=""></option>
           <option value="Crvena">Crvena</option>
           <option value="Žuta">Žuta</option>
         </select>
@@ -113,6 +117,7 @@ export default function Contact() {
           name="slaganjeTorte"
           onChange={handleChange}
         >
+          <option value=""></option>
           <option value="Da (0,08€/kriški)">Da (0,08€/kriški)</option>
           <option value="Ne">Ne</option>
         </select>
@@ -123,6 +128,7 @@ export default function Contact() {
           name="preuzimanje"
           onChange={handleChange}
         >
+          <option value=""></option>
           <option value="Osobno preuzimanje trgovina Paketić (plaćanje gotovinom)">
             Osobno preuzimanje trgovina Paketić (plaćanje gotovinom)
           </option>
@@ -178,6 +184,7 @@ export default function Contact() {
           name="vrstePlacanja"
           onChange={handleChange}
         >
+          <option value=""></option>
           <option value="Kod osobnog preuzimanja">
             Kod osobnog preuzimanja
           </option>
