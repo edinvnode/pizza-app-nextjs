@@ -5,17 +5,28 @@ import { FormEvent, useState } from 'react';
 export default function Contact() {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    temaTorte: 'Crvena',
+    brojKriskica: '',
+    bojaKriskica: '',
+    bojaMasnice: '',
+    slaganjeTorte: '',
+    preuzimanje: '',
+    podaciZaDostavu: '',
     email: '',
-    message: '',
+    brojTelefona: '',
+    datumPreuzimanja: '',
+    dodatniOpis: '',
+    vrstePlacanja: '',
   });
 
+  const isDisabled = false;
+
+  /*
   const isDisabled =
     formData.email === '' ||
     formData.firstName === '' ||
     formData.lastName === '' ||
-    formData.message === '';
+    formData.message === '';*/
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -44,8 +55,12 @@ export default function Contact() {
         className="form-styled flex flex-col border-2 rounded-md p-4 w-full max-w-lg bg-white my-3"
         onSubmit={handleSubmit}
       >
-        <label>Tema torte:</label>
-        <select name="wpforms[fields][1]" aria-invalid="false">
+        <label className="">Tema torte:</label>
+        <select
+          className="my-2 border border-black"
+          name="temaTorte"
+          onChange={handleChange}
+        >
           <option value="Bez naljepnica (0,56eur/kriški)">
             Bez naljepnica (0,56eur/kriški)
           </option>
@@ -54,70 +69,115 @@ export default function Contact() {
             Ariel mala sirena (0,72€/kriški)
           </option>
           <option value="Batman (0,72€/kriški)">Batman (0,72€/kriški)</option>
-          {/* ... all your other options ... */}
           <option value="Uzorak po Vašem izboru (0,72€/kriški)">
             Uzorak po Vašem izboru (0,72€/kriški)
           </option>
         </select>
 
-        <label>Broj kriškica:</label>
-        <select name="brojKriskica" aria-invalid="false">
+        <label className="">Broj kriškica:</label>
+        <select
+          className="my-2 border border-black"
+          name="brojKriskica"
+          onChange={handleChange}
+        >
           <option value="10">10</option>
           <option value="12">12</option>
           <option value="14">14</option>
           <option value="20">20</option>
-          {/* ...etc... */}
         </select>
 
-        <label>Boja kriškica:</label>
-        <select name="bojaKriskica">
+        <label className="">Boja kriškica:</label>
+        <select
+          className="my-2 border border-black"
+          name="bojaKriskica"
+          onChange={handleChange}
+        >
           <option value="Šarena - sve boje">Šarena - sve boje</option>
           <option value="Bijela">Bijela</option>
           <option value="Žuta">Žuta</option>
-          {/* ...etc... */}
         </select>
 
-        <label>Boja mašnice:</label>
-        <select name="bojaMasnice">
+        <label className="">Boja mašnice:</label>
+        <select
+          className="my-2 border border-black"
+          name="bojaMasnice"
+          onChange={handleChange}
+        >
           <option value="Crvena">Crvena</option>
           <option value="Žuta">Žuta</option>
-          {/* ...etc... */}
         </select>
 
-        <label>Slaganje torte:</label>
-        <select name="slaganjeTorte">
+        <label className="">Slaganje torte:</label>
+        <select
+          className="my-2 border border-black"
+          name="slaganjeTorte"
+          onChange={handleChange}
+        >
           <option value="Da (0,08€/kriški)">Da (0,08€/kriški)</option>
           <option value="Ne">Ne</option>
         </select>
 
         <label>Preuzimanje:</label>
-        <select name="wpreuzimanje">
+        <select
+          className="my-2 border border-black"
+          name="preuzimanje"
+          onChange={handleChange}
+        >
           <option value="Osobno preuzimanje trgovina Paketić (plaćanje gotovinom)">
             Osobno preuzimanje trgovina Paketić (plaćanje gotovinom)
           </option>
         </select>
 
-        <label>Podaci za dostavu:</label>
-        <textarea name="podaciZaDostavu" />
+        <label className="">Podaci za dostavu:</label>
+        <textarea
+          className="my-2 border border-black"
+          name="podaciZaDostavu"
+          onChange={handleChange}
+        />
 
-        <label>E-mail adresa:</label>
-        <input type="email" placeholder="Email adresa" />
+        <label className="">E-mail adresa:</label>
+        <input
+          type="email"
+          className="my-2 border border-black"
+          placeholder="Email adresa"
+          name="email"
+          onChange={handleChange}
+        />
 
-        <label>Broj telefona za kontakt:</label>
-        <input type="text" placeholder="Broj telefona:" />
+        <label className="">Broj telefona za kontakt:</label>
+        <input
+          type="text"
+          className="my-2 border border-black"
+          placeholder="Broj telefona:"
+          name="brojTelefona"
+          onChange={handleChange}
+        />
 
-        <label>Datum preuzimanja torte:</label>
+        <label className="">Datum preuzimanja torte:</label>
         <div className="text-sm text-gray-600">
           Datum kada bi došli po tortu ako je osobno preuzimate u trgovini
           Paketić.
         </div>
-        <input type="text" name="datumPreuzimanja" />
+        <input
+          type="text"
+          className="my-2 border border-black"
+          name="datumPreuzimanja"
+          onChange={handleChange}
+        />
 
-        <label>Dodatni opis:</label>
-        <textarea name="dodatniOpis" />
+        <label className="">Dodatni opis:</label>
+        <textarea
+          className="my-2 border border-black"
+          name="dodatniOpis"
+          onChange={handleChange}
+        />
 
-        <label>Vrste plaćanja:</label>
-        <select id="wpforms-296-field_18" name="vrstePlacanja">
+        <label className="">Vrste plaćanja:</label>
+        <select
+          className="my-2 border border-black"
+          name="vrstePlacanja"
+          onChange={handleChange}
+        >
           <option value="Kod osobnog preuzimanja">
             Kod osobnog preuzimanja
           </option>
