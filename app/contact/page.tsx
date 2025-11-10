@@ -19,7 +19,7 @@ export default function Contact() {
     vrstePlacanja: '',
   });
 
-  const isDisabled = false;
+  //const isDisabled = false;
 
   /*
   const isDisabled =
@@ -27,6 +27,20 @@ export default function Contact() {
     formData.firstName === '' ||
     formData.lastName === '' ||
     formData.message === '';*/
+
+  const isDisabled =
+    formData.temaTorte === '' ||
+    formData.brojKriskica === '' ||
+    formData.bojaKriskica === '' ||
+    formData.bojaMasnice === '' ||
+    formData.slaganjeTorte === '' ||
+    formData.preuzimanje === '' ||
+    formData.podaciZaDostavu === '' ||
+    formData.email === '' ||
+    formData.brojTelefona === '' ||
+    formData.datumPreuzimanja === '' ||
+    formData.dodatniOpis === '' ||
+    formData.vrstePlacanja === '';
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -88,6 +102,7 @@ export default function Contact() {
           className="my-2 border border-black"
           name="temaTorte"
           onChange={handleChange}
+          value={formData.temaTorte}
         >
           <option value=""></option>
           <option value="Bez naljepnica (0,56eur/kriški)">
@@ -108,6 +123,7 @@ export default function Contact() {
           className="my-2 border border-black"
           name="brojKriskica"
           onChange={handleChange}
+          value={formData.brojKriskica}
         >
           <option value=""></option>
           <option value="10">10</option>
@@ -121,6 +137,7 @@ export default function Contact() {
           className="my-2 border border-black"
           name="bojaKriskica"
           onChange={handleChange}
+          value={formData.bojaKriskica}
         >
           <option value=""></option>
           <option value="Šarena - sve boje">Šarena - sve boje</option>
@@ -133,6 +150,7 @@ export default function Contact() {
           className="my-2 border border-black"
           name="bojaMasnice"
           onChange={handleChange}
+          value={formData.bojaMasnice}
         >
           <option value=""></option>
           <option value="Crvena">Crvena</option>
@@ -144,6 +162,7 @@ export default function Contact() {
           className="my-2 border border-black"
           name="slaganjeTorte"
           onChange={handleChange}
+          value={formData.slaganjeTorte}
         >
           <option value=""></option>
           <option value="Da (0,08€/kriški)">Da (0,08€/kriški)</option>
@@ -155,6 +174,7 @@ export default function Contact() {
           className="my-2 border border-black"
           name="preuzimanje"
           onChange={handleChange}
+          value={formData.preuzimanje}
         >
           <option value=""></option>
           <option value="Osobno preuzimanje trgovina Paketić (plaćanje gotovinom)">
@@ -216,6 +236,7 @@ export default function Contact() {
           className="my-2 border border-black"
           name="vrstePlacanja"
           onChange={handleChange}
+          value={formData.vrstePlacanja}
         >
           <option value=""></option>
           <option value="Kod osobnog preuzimanja">
