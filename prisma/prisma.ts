@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { PrismaClient } from "@prisma/client";
 
 declare global {
@@ -11,3 +12,18 @@ export const prisma =
   });
 
 if (process.env.NODE_ENV !== "production") global.prisma = prisma;
+=======
+import { PrismaClient } from "@prisma/client";
+
+declare global {
+  var prisma: PrismaClient | undefined;
+}
+
+export const prisma =
+  global.prisma ||
+  new PrismaClient({
+    log: ["query"],
+  });
+
+if (process.env.NODE_ENV !== "production") global.prisma = prisma;
+>>>>>>> 3a987414eb50bb2cdd972783c748cb7773135173
