@@ -43,10 +43,38 @@ export default function Contact() {
       : setErrorMessage('🚀 Form ready to submit.');
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(formData);
-    alert('Form submitted!');
+
+    try {
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) throw new Error('Greška pri slanju poruke.');
+
+      alert('✅ Email uspješno poslan!');
+      setFormData({
+        temaTorte: '',
+        brojKriskica: '',
+        bojaKriskica: '',
+        bojaMasnice: '',
+        slaganjeTorte: '',
+        preuzimanje: '',
+        podaciZaDostavu: '',
+        email: '',
+        brojTelefona: '',
+        datumPreuzimanja: '',
+        dodatniOpis: '',
+        vrstePlacanja: '',
+      });
+      setErrorMessage('');
+    } catch (err: any) {
+      console.error(err);
+      setErrorMessage('❌ Greška pri slanju emaila.');
+    }
   };
 
   return (
@@ -139,6 +167,7 @@ export default function Contact() {
           className="my-2 border border-black"
           name="podaciZaDostavu"
           onChange={handleChange}
+          value={formData.podaciZaDostavu}
         />
 
         <label className="">E-mail adresa:</label>
@@ -148,6 +177,7 @@ export default function Contact() {
           placeholder="Email adresa"
           name="email"
           onChange={handleChange}
+          value={formData.email}
         />
 
         <label className="">Broj telefona za kontakt:</label>
@@ -157,6 +187,7 @@ export default function Contact() {
           placeholder="Broj telefona:"
           name="brojTelefona"
           onChange={handleChange}
+          value={formData.brojTelefona}
         />
 
         <label className="">Datum preuzimanja torte:</label>
@@ -169,6 +200,7 @@ export default function Contact() {
           className="my-2 border border-black"
           name="datumPreuzimanja"
           onChange={handleChange}
+          value={formData.datumPreuzimanja}
         />
 
         <label className="">Dodatni opis:</label>
@@ -176,6 +208,7 @@ export default function Contact() {
           className="my-2 border border-black"
           name="dodatniOpis"
           onChange={handleChange}
+          value={formData.dodatniOpis}
         />
 
         <label className="">Vrste plaćanja:</label>
