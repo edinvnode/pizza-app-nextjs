@@ -33,7 +33,7 @@ export default function Contact() {
     formData.brojTelefona === '' ||
     formData.datumPreuzimanja === '' ||
     formData.dodatniOpis === '' ||
-    formData.vrstePlacanja === '' || 
+    formData.vrstePlacanja === '' ||
     submitting;
 
   const handleChange = (
@@ -47,8 +47,8 @@ export default function Contact() {
       [name]: value,
     });
     isDisabled
-      ? setErrorMessage('⚠️ Please fill in the required fields.')
-      : setErrorMessage('🚀 Form ready to submit.');
+      ? setErrorMessage('⚠️ Molimo vas ispunite sva polja.')
+      : setErrorMessage('🚀 Forma je spremna za slanje.');
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -81,7 +81,6 @@ export default function Contact() {
       setErrorMessage('');
 
       if (!res.ok) throw new Error('Greška pri slanju poruke.');
-
     } catch (err: any) {
       console.error(err);
       setErrorMessage('❌ Greška pri slanju emaila.');
@@ -91,7 +90,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-200 ">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-pink-200 ">
       <form
         className="form-styled flex flex-col border-2 rounded-md p-4 w-full max-w-lg bg-white my-3"
         onSubmit={handleSubmit}
@@ -215,7 +214,7 @@ export default function Contact() {
           Paketić.
         </div>
         <input
-          type="text"
+          type="date"
           className="my-2 border border-black"
           name="datumPreuzimanja"
           onChange={handleChange}
@@ -256,7 +255,7 @@ export default function Contact() {
           }`}
           disabled={isDisabled}
         >
-          {submitting ? <Spinner size={30} />  : "Pošalji"}
+          {submitting ? <Spinner size={30} /> : 'Pošalji'}
         </button>
 
         <p
