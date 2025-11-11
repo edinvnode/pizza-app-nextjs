@@ -13,6 +13,7 @@
     "@supabase/supabase-js": "^2.78.0",
     "clsx": "^2.1.1",
     "formidable": "^3.5.4",
+    "framer-motion": "^12.23.24",
     "next": "15.5.5",
     "nodemailer": "^7.0.10",
     "postcss": "^8.5.6",

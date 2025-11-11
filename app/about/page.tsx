@@ -1,7 +1,62 @@
+'use client';
+
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
+const messages = [
+  {
+    message: 'Predivna torta, izgleda još ljepše uživo! Sve pohvale!',
+    author: 'Amina',
+  },
+  {
+    message:
+      'Merisa, hvala ti! Poklon je oduševio moju prijateljicu. Toliko pažnje u svakom detalju.',
+    author: 'Selma',
+  },
+  {
+    message: 'Kreativno, uredno, savršeno zapakovano! Topla preporuka svima.',
+    author: 'Lejla',
+  },
+  {
+    message:
+      'Vi ste jedna divota na ovoj planeti, to nikada nemojte zaboraviti! Hvala Vam puno na predivnoj torti',
+    author: 'Dina',
+  },
+  {
+    message:
+      'Draga Merisa sve je ispalo perfektno …zaista nisam sumnjala u krajnji ishod.',
+    author: 'Dženita',
+  },
+  {
+    message:
+      'Precizno urađene torte sa divnim sadržajem. Svaka rijec je suvišna. Moja iskrena preporuka za   kreativnu i maštovitu Mery.',
+    author: 'Ilda',
+  },
+  {
+    message:
+      'Malo gdje cete naći toliko profesionalnosti i kvalitetno urađene torte , sa toliko ljubavi se rade, , da pored djece oduševe se i stariji.',
+    author: 'Amina',
+  },
+  {
+    message:
+      'Predivne torte, djevojci sam poklonio tortu za godišnjicu veze i ostala je bez teksta. ',
+    author: 'Amar',
+  },
+];
+
 export default function About() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % messages.length);
+    }, 3000); // change every 3s
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="w-screen min-h-screen bg-gradient-to-b from-yellow-50 to-gray-100 flex flex-col items-center">
       {/* Header */}
@@ -85,13 +140,32 @@ export default function About() {
       {/* Google Map */}
       <div className="my-12 w-full flex justify-center">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2877.1530003242683!2d18.396102176187384!3d43.852657371093215!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4758c9692463b1cb%3A0x4125c306e5d62a6d!2sInternational%20Center%20for%20Children%20and%20Youth%20Novo%20Sarajevo!5e0!3m2!1sen!2sba!4v1761684784737!5m2!1sen!2sba"
-          width="600"
-          height="450"
-          style={{ border: '0' }}
-          loading="lazy"
-          className="rounded-lg shadow-md"
+          class="embed-map-frame"
+          frameborder="0"
+          scrolling="no"
+          marginheight="0"
+          marginwidth="0"
+          src="https://maps.google.com/maps?width=600&height=400&hl=en&q=Adija%20Mulabegovi%C4%87a%206&t=&z=14&ie=UTF8&iwloc=B&output=embed"
+          className="rounded-md shadow-2xl"
         ></iframe>
+      </div>
+
+      <div className="relative h-24 flex flex-col items-center justify-center overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -30 }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            <p className="text-2xl font-semibold">{messages[index].message}</p>
+            <p className="text-sm text-gray-500 mt-2">
+              — {messages[index].author}
+            </p>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Contact Section (White Background with Gray Theme) */}
