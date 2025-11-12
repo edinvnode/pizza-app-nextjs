@@ -1,16 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { pizzaApi } from "./api/pizzaApi";
+import { adminApi } from "./api/adminApi";
 import modalReducer from "./slices/modalSlice";
 import pizzaReducer from "./slices/pizzaDataSlice";
 
 export const store = configureStore({
   reducer: {
     modalType: modalReducer,
-    [pizzaApi.reducerPath]: pizzaApi.reducer,
     pizzaData: pizzaReducer,
+    [pizzaApi.reducerPath]: pizzaApi.reducer,
+    [adminApi.reducerPath]: adminApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(pizzaApi.middleware),
+    getDefaultMiddleware()
+      .concat(pizzaApi.middleware)
+      .concat(adminApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

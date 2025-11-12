@@ -12,7 +12,7 @@ interface AdminPayload {
 const cookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  maxAge: 60 * 60, // 1 hour
+  maxAge: 60 * 60, 
   path: "/",
   sameSite: "strict" as const,
 };

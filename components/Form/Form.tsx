@@ -6,6 +6,8 @@ import {
 import Spinner from "../Spinner/Spinner";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { useLoginAdminMutation } from "@/redux/api/adminApi";
+import { useGetAdminQuery } from "@/redux/api/adminApi";
 
 interface FormData {
   name: string;
@@ -28,9 +30,10 @@ export default function PizzaForm() {
   const [addPizza] = useAddPizzaMutation();
   const [editPizza] = useEditPizzaMutation();
   const modalType = useSelector((state: RootState) => state.modalType);
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginAdmin, { data: loginData, error: loginError, isError, isLoading: loginLoading, isSuccess }] = useLoginAdminMutation();
+  const { data: adminData, error: adminError, isLoading: adminLoading } = useGetAdminQuery();
 
   const { value: modal } = modalType;
   const { name, price, image, description } = formData;
@@ -39,6 +42,10 @@ export default function PizzaForm() {
   const isAddInvalid = isAddMode && (!name || !price || !image || !description);
   const isEditInvalid = isEditMode && !name && !price && !image && !description;
   const btnDisabled = isAddInvalid || isEditInvalid || submitting;
+  const errorMessage = isError && loginError && "data" in loginError
+    ? (loginError.data as { message?: string }).message || "Invalid credentials"
+    : null;
+
 
   type InputElements = | HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
 
@@ -53,6 +60,7 @@ export default function PizzaForm() {
 
     setFormData((prev) => ({ ...prev, [name]: newValue }));
   };
+
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     /*
@@ -84,28 +92,8 @@ export default function PizzaForm() {
     }
    */
 
-    e.preventDefault()
-
-
-
-  const res = await fetch('/api/admin', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
-  })
-
-  
-
-
-  const data = await res.json() // now this will work
-  if (res.ok) {
-    console.log('Welcome', data);
-    setError("");
-  } else {
-    setError(data.message)
-  }
-
-
+    e.preventDefault();
+    await loginAdmin({ email, password });
 
   };
 
@@ -116,107 +104,119 @@ export default function PizzaForm() {
       onSubmit={handleSubmit}
       className="space-y-4 p-6 text-gray-900 -mt-4 text-center"
     >
-    {/*
-      <div>
-        <label htmlFor="name" className="block">
-          Name:
-        </label>
-        <input
-          type="text"
-          name="name"
-          defaultValue={modalType.selectedPizza?.name}
-          onChange={handleChange}
-          className="border rounded p-2 w-full"
-          id="name"
-          placeholder="Margherita"
-          required={isAddMode}
-        />
-      </div>
+      {adminData ? (
+        <>
+          <div>
+            <label htmlFor="name" className="block">
+              Name:
+            </label>
+            <input
+              type="text"
+              name="name"
+              defaultValue={modalType.selectedPizza?.name}
+              onChange={handleChange}
+              className="border rounded p-2 w-full"
+              id="name"
+              placeholder="Margherita"
+              required={isAddMode}
+            />
+          </div>
 
-      <div>
-        <label htmlFor="price" className="block">
-          Price (USD):
-        </label>
-        <input
-          type="number"
-          name="price"
-          defaultValue={modalType.selectedPizza?.price}
-          onChange={handleChange}
-          ref={numberRef}
-          className="border rounded p-2 w-full"
-          id="price"
-          min="1"
-          max="200"
-          step="0.01"
-          placeholder="11.50"
-          required={isAddMode}
-        />
-      </div>
+          <div>
+            <label htmlFor="price" className="block">
+              Price (USD):
+            </label>
+            <input
+              type="number"
+              name="price"
+              defaultValue={modalType.selectedPizza?.price}
+              onChange={handleChange}
+              ref={numberRef}
+              className="border rounded p-2 w-full"
+              id="price"
+              min="1"
+              max="200"
+              step="0.01"
+              placeholder="11.50"
+              required={isAddMode}
+            />
+          </div>
 
-      <div>
-        <label htmlFor="image" className="block">
-          Image:
-        </label>
-        <input
-          type="file"
-          name="image"
-          onChange={handleChange}
-          ref={fileInputRef}
-          className="border rounded p-2 w-full"
-          id="image"
-          required={isAddMode}
-        />
-      </div>
+          <div>
+            <label htmlFor="image" className="block">
+              Image:
+            </label>
+            <input
+              type="file"
+              name="image"
+              onChange={handleChange}
+              ref={fileInputRef}
+              className="border rounded p-2 w-full"
+              id="image"
+              required={isAddMode}
+            />
+          </div>
 
-      <div>
-        <label htmlFor="description" className="block">
-          Description:
-        </label>
-        <textarea
-          name="description"
-          placeholder="An Italian dish consisting of a flat, leavened dough base topped with ingredients such as..."
-          onChange={handleChange}
-          rows={4}
-          cols={40}
-          className="border rounded p-2 w-full"
-          defaultValue={modalType.selectedPizza?.description}
-          required={isAddMode}
-        />
-      </div>
-    */}
-      <div>
-        <label htmlFor="email" className="block">
-          E-mail:
-        </label>
-        <input
-          type="email"
-          placeholder="Email"
-          className="border rounded p-2 w-full"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
+          <div>
+            <label htmlFor="description" className="block">
+              Description:
+            </label>
+            <textarea
+              name="description"
+              placeholder="An Italian dish consisting of a flat, leavened dough base topped with ingredients such as..."
+              onChange={handleChange}
+              rows={4}
+              cols={40}
+              className="border rounded p-2 w-full"
+              defaultValue={modalType.selectedPizza?.description}
+              required={isAddMode}
+            />
+          </div>
+        </>
+      ) : (
+        <>
+          <div>
+            <label htmlFor="email" className="block">
+              E-mail:
+            </label>
+            <input
+              type="email"
+              placeholder="Email"
+              className="border rounded p-2 w-full"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
 
-      <div>
-        <label htmlFor="password" className="block">
-          Password:
-        </label>
-        <input
-          type="password"
-          placeholder="Password"
-          className="border rounded p-2 w-full"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
+          <div>
+            <label htmlFor="password" className="block">
+              Password:
+            </label>
+            <input
+              type="password"
+              placeholder="Password"
+              className="border rounded p-2 w-full"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+        </>
+      )}
+
 
       <button
         type="submit"
         className={`bg-[#1B2533] text-white px-4 py-2 rounded w-32 h-12 bg-[#1B2533] cursor-pointer`}
       >
-        {submitting ? <Spinner size={30} /> : "Submit"}
+        {/*submitting ? <Spinner size={30} /> : "Submit"*/}
+        {loginLoading ? "Logging in..." : "Login"}
       </button>
-      {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+      {isSuccess && adminData && (
+        <p className="text-green-600">Welcome, {adminData.email}!</p>
+      )}
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+      <h1>Welcome, {adminData?.email}</h1>
+      <p>Role: {adminData?.role}</p>
     </form>
   );
 }
