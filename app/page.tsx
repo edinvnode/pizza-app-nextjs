@@ -26,6 +26,8 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(setPizzaData(pizzaData ?? []));
+        console.log('ENV email:', process.env.ADMIN_EMAIL)
+        console.log('ENV hash:', process.env.ADMIN_PASSWORD_HASH)
   }, [pizzaData]);
 
   if (isLoading || isError) {

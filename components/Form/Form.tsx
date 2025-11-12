@@ -1,4 +1,4 @@
-import { useState, useRef, FormEvent, ChangeEvent } from "react";
+import { useState, useRef, FormEvent, ChangeEvent, useEffect } from "react";
 import {
   useAddPizzaMutation,
   useEditPizzaMutation,
@@ -28,6 +28,9 @@ export default function PizzaForm() {
   const [addPizza] = useAddPizzaMutation();
   const [editPizza] = useEditPizzaMutation();
   const modalType = useSelector((state: RootState) => state.modalType);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
 
   const { value: modal } = modalType;
   const { name, price, image, description } = formData;
@@ -52,6 +55,7 @@ export default function PizzaForm() {
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    /*
     e.preventDefault();
     setSubmitting(true);
     if (isAddMode && (!formData.image || !(formData.image instanceof File)))
@@ -78,13 +82,41 @@ export default function PizzaForm() {
         `Failed to add pizza: ${e instanceof Error ? e.message : e}`
       );
     }
+   */
+
+    e.preventDefault()
+
+
+
+  const res = await fetch('/api/admin', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  })
+
+  
+
+
+  const data = await res.json() // now this will work
+  if (res.ok) {
+    console.log('Welcome', data);
+    setError("");
+  } else {
+    setError(data.message)
+  }
+
+
+
   };
+
+
 
   return (
     <form
       onSubmit={handleSubmit}
       className="space-y-4 p-6 text-gray-900 -mt-4 text-center"
     >
+    {/*
       <div>
         <label htmlFor="name" className="block">
           Name:
@@ -151,18 +183,40 @@ export default function PizzaForm() {
           required={isAddMode}
         />
       </div>
+    */}
+      <div>
+        <label htmlFor="email" className="block">
+          E-mail:
+        </label>
+        <input
+          type="email"
+          placeholder="Email"
+          className="border rounded p-2 w-full"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="password" className="block">
+          Password:
+        </label>
+        <input
+          type="password"
+          placeholder="Password"
+          className="border rounded p-2 w-full"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
 
       <button
         type="submit"
-        className={`bg-[#1B2533] text-white px-4 py-2 rounded w-32 h-12 ${
-          btnDisabled
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-[#1B2533] cursor-pointer"
-        }`}
-        disabled={btnDisabled}
+        className={`bg-[#1B2533] text-white px-4 py-2 rounded w-32 h-12 bg-[#1B2533] cursor-pointer`}
       >
         {submitting ? <Spinner size={30} /> : "Submit"}
       </button>
+      {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
     </form>
   );
 }

@@ -5,6 +5,7 @@ import { saveFile } from "./utils/fileupload";
 const prisma = new PrismaClient();
 
 export async function GET() {
+  
   try {
     const pizzas = await prisma.pizza.findMany({
       orderBy: { createdAt: "desc" },
