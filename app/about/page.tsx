@@ -62,7 +62,7 @@ export default function About() {
       {/* Header */}
       <header className="text-center py-10">
         <h1 className="text-5xl font-extrabold text-gray-800 drop-shadow-md tracking-wide">
-          Torte od papira Mery
+          Papirna čarolija
         </h1>
         <p className="text-gray-600 mt-3 text-lg">
           Ručno rađene torte koje donose osmijeh i radost!
@@ -71,35 +71,13 @@ export default function About() {
 
       {/* Main content */}
       <section className="flex flex-col md:flex-row justify-center items-center md:items-start max-w-6xl w-full px-6 md:px-10 py-8 gap-8">
-        {/* Pizza Image */}
-        <div className="grid grid-cols-2 md:w-1/2">
+        <div className="grid grid-cols-1 md:w-1/2">
           <Image
-            src="/images/torta1.jpg"
-            alt="Pizza Capricciosa"
-            height={50}
-            width={250}
+            src="/images/torta1.jpeg"
+            alt="Tota"
+            height={1250}
+            width={850}
             className="rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 object-cover border-white"
-          />
-          <Image
-            src="/images/torta2.jpg"
-            alt="Slika torte"
-            height={250}
-            width={250}
-            className="rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 object-cover border-white"
-          />
-          <Image
-            src="/images/torta3.jpg"
-            alt="Slika torte"
-            height={250}
-            width={250}
-            className="rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 object-cover  border-white"
-          />
-          <Image
-            src="/images/torta4.jpg"
-            alt="Slika torte"
-            height={250}
-            width={250}
-            className="rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 object-cover  border-white"
           />
         </div>
 
@@ -123,16 +101,21 @@ export default function About() {
             O tortama
           </h2>
           <p className="mb-3">
-            Dobrodošli u Papirnu čaroliju 🎀 Mjesto gdje pokloni postaju
-            uspomene! Izrađujem unikatne papirne torte koje se mogu puniti
-            slatkišima, sitnicama i iznenađenjima — savršene za rođendane,
-            vrtiće, mature, diplome i sve posebne prilike. Svaka torta dolazi s
-            čestitkom i može biti prazna ili puna — po vašoj želji.
+            Dobrodošli u Papirnu čaroliju. 🎀 <br /> Mjesto gdje pokloni postaju
+            uspomene!
           </p>
+          <br></br>
           <p className="mb-3">
-            💝 Poklonite osmijeh uz čaroliju papira! Za sva pitanja, dodatne
-            informacije (cijene, adresa, kontakt telefon), sugestije slobodno se
-            obratite putem e-mail-a ili FB stranice.
+            Izrađujem unikatne papirne torte koje se mogu puniti slatkišima,
+            sitnicama i iznenađenjima — savršene za rođendane, vrtiće, mature,
+            diplome i sve posebne prilike. Svaka torta dolazi s čestitkom i može
+            biti prazna ili puna — po vašoj želji.
+          </p>
+          <br></br>
+          <p className="mb-3">
+            💝 Poklonite osmijeh uz čaroliju papira! <br /> Za sva pitanja,
+            dodatne informacije (cijene, adresa, kontakt telefon), sugestije
+            slobodno se obratite putem e-mail-a ili FB stranice.
           </p>
         </div>
       </section>
@@ -140,12 +123,7 @@ export default function About() {
       {/* Google Map */}
       <div className="my-12 w-full flex justify-center">
         <iframe
-          class="embed-map-frame"
-          frameborder="0"
-          scrolling="no"
-          marginheight="0"
-          marginwidth="0"
-          src="https://maps.google.com/maps?width=600&height=400&hl=en&q=Adija%20Mulabegovi%C4%87a%206&t=&z=14&ie=UTF8&iwloc=B&output=embed"
+          src="https://maps.google.com/maps?width=800&height=500&hl=en&q=Adija%20Mulabegovi%C4%87a%206&t=&z=14&ie=UTF8&iwloc=B&output=embed"
           className="rounded-md shadow-2xl"
         ></iframe>
       </div>
@@ -187,16 +165,16 @@ export default function About() {
             Facebook
           </Link>
           <Link
-            href="https://instagram.com/mypage"
+            href="https://www.facebook.com/TorteodpapiraMery"
+            className="text-gray-800 hover:text-gray-600 transition-colors"
+          >
+            Facebook
+          </Link>
+          <Link
+            href="https://www.instagram.com/pokloni_mery/?igsh=MTVyamtzemMyNnhvYw%3D%3D"
             className="text-gray-800 hover:text-gray-600 transition-colors"
           >
             Instagram
-          </Link>
-          <Link
-            href="https://pinterest.com/mypage"
-            className="text-gray-800 hover:text-gray-600 transition-colors"
-          >
-            Pinterest
           </Link>
           <Link
             href="mailto:meeriisaa@live.com"
