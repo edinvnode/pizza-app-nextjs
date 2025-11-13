@@ -10,10 +10,12 @@ import { useLoginAdminMutation } from "@/redux/api/adminApi";
 import { useGetAdminQuery } from "@/redux/api/adminApi";
 
 interface FormData {
-  name: string;
-  price: number;
-  image: string | File;
-  description: string;
+  name?: string;
+  price?: number;
+  image?: string | File;
+  description?: string;
+  email?: string;
+  password?: string;
 }
 
 export default function PizzaForm() {
@@ -22,89 +24,118 @@ export default function PizzaForm() {
     price: 0.0,
     image: "",
     description: "",
+    email: "",
+    password: "",
   });
 
-  const [submitting, setSubmitting] = useState<boolean>(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const numberRef = useRef<HTMLInputElement>(null);
-  const [addPizza] = useAddPizzaMutation();
-  const [editPizza] = useEditPizzaMutation();
-  const modalType = useSelector((state: RootState) => state.modalType);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loginAdmin, { data: loginData, error: loginError, isError, isLoading: loginLoading, isSuccess }] = useLoginAdminMutation();
-  const { data: adminData, error: adminError, isLoading: adminLoading } = useGetAdminQuery();
+  // --- Local state ---
+const [submitting, setSubmitting] = useState(false);
+const fileInputRef = useRef<HTMLInputElement>(null);
+const numberRef = useRef<HTMLInputElement>(null);
 
-  const { value: modal } = modalType;
-  const { name, price, image, description } = formData;
-  const isAddMode = modal === "pizzaOrder";
-  const isEditMode = modal === "pizzaEdit";
-  const isAddInvalid = isAddMode && (!name || !price || !image || !description);
-  const isEditInvalid = isEditMode && !name && !price && !image && !description;
-  const btnDisabled = isAddInvalid || isEditInvalid || submitting;
-  const errorMessage = isError && loginError && "data" in loginError
-    ? (loginError.data as { message?: string }).message || "Invalid credentials"
-    : null;
+// --- API hooks ---
+const [addPizza] = useAddPizzaMutation();
+const [editPizza] = useEditPizzaMutation();
+const [loginAdmin, { error: loginError, isError }] = useLoginAdminMutation();
+const { data: adminData } = useGetAdminQuery();
+
+// --- Redux selector ---
+const modalType = useSelector((state: RootState) => state.modalType);
+
+// --- Form data ---
+const { name, price, image, description, email, password } = formData;
+
+// --- Mode flags ---
+const isAddMode = modalType.value === "pizzaOrder";
+const isEditMode = modalType.value === "pizzaEdit";
+const isLoginMode = !adminData;
+
+// --- Validation flags ---
+const isAddInvalid = isAddMode && (!name || !price || !image || !description);
+const isEditInvalid = isEditMode && !name && !price && !image && !description;
+const isLoginInvalid = !email || !password;
+
+// --- Button disabled state ---
+const btnDisabled = submitting || (isLoginMode ? isLoginInvalid : isAddInvalid || isEditInvalid);
+
+// --- Error message helper ---
+const errorMessage = (() => {
+  if (isError && loginError && "data" in loginError) {
+    return (loginError.data as { message?: string }).message || "Invalid credentials";
+  }
+  return null;
+})();
 
 
-  type InputElements = | HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+  type InputElements =
+    | HTMLInputElement
+    | HTMLTextAreaElement
+    | HTMLSelectElement;
 
   const handleChange = (e: ChangeEvent<InputElements>) => {
     const target = e.target;
     const { name, value, type } = target;
-
     const newValue =
       type === "file" && target instanceof HTMLInputElement
         ? target.files?.[0] ?? ""
         : value;
-
     setFormData((prev) => ({ ...prev, [name]: newValue }));
   };
 
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    /*
     e.preventDefault();
-    setSubmitting(true);
-    if (isAddMode && (!formData.image || !(formData.image instanceof File)))
-      return;
 
-    const data = new FormData();
-    if (name) data.append("name", name);
-    if (price) data.append("price", price.toString());
-    if (formData.image instanceof File) data.append("file", formData.image);
-    if (description) data.append("description", description);
+    setSubmitting(true);
+
+    const data = Object.entries({
+      name,
+      price: price?.toString(),
+      description,
+      email,
+      password,
+    }).reduce((formData, [key, value]) => {
+      if (value) formData.append(key, value);
+      return formData;
+    }, new FormData());
+
+    if (image instanceof File) data.append("file", image);
 
     try {
-      (await isAddMode)
+      if (isLoginMode) {
+        await loginAdmin({ email: email ?? "", password: password ?? "" });
+        return;
+      }
+
+      const pizzaAction = isAddMode
         ? addPizza(data).unwrap()
         : editPizza({ id: modalType.selectedPizza!.id, data }).unwrap();
-      setTimeout(() => {
-        isAddMode &&
-          setFormData({ name: "", price: 0.0, image: "", description: "" });
-        if (fileInputRef.current) fileInputRef.current.value = "";
-        setSubmitting(false);
-      }, 1000);
-    } catch (e) {
+      await pizzaAction;
+
+      if (isAddMode) {
+        setFormData({ name: "", price: 0.0, image: "", description: "" });
+      }
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+
+      setTimeout(() => setSubmitting(false), 1000);
+    } catch (err) {
+      const action = isLoginMode ? "login" : isAddMode ? "add" : "edit";
       console.error(
-        `Failed to add pizza: ${e instanceof Error ? e.message : e}`
+        `Failed to ${action} pizza: ${err instanceof Error ? err.message : err}`
       );
+    } finally {
+      setSubmitting(false);
     }
-   */
-
-    e.preventDefault();
-    await loginAdmin({ email, password });
-
   };
-
-
 
   return (
     <form
       onSubmit={handleSubmit}
       className="space-y-4 p-6 text-gray-900 -mt-4 text-center"
     >
-      {adminData ? (
+      {!isLoginMode ? (
         <>
           <div>
             <label htmlFor="name" className="block">
@@ -180,11 +211,12 @@ export default function PizzaForm() {
               E-mail:
             </label>
             <input
+              name="email"
               type="email"
               placeholder="Email"
               className="border rounded p-2 w-full"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              defaultValue={formData.email}
+              onChange={handleChange}
             />
           </div>
 
@@ -193,30 +225,28 @@ export default function PizzaForm() {
               Password:
             </label>
             <input
+              name="password"
               type="password"
               placeholder="Password"
               className="border rounded p-2 w-full"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              defaultValue={formData.password}
+              onChange={handleChange}
             />
           </div>
         </>
       )}
-
-
       <button
         type="submit"
-        className={`bg-[#1B2533] text-white px-4 py-2 rounded w-32 h-12 bg-[#1B2533] cursor-pointer`}
+        className={`bg-[#1B2533] text-white px-4 py-2 rounded w-32 h-12 ${
+          btnDisabled
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-[#1B2533] cursor-pointer"
+        }`}
+        disabled={btnDisabled}
       >
-        {/*submitting ? <Spinner size={30} /> : "Submit"*/}
-        {loginLoading ? "Logging in..." : "Login"}
+        {submitting ? <Spinner size={30} /> : isLoginMode ? "Login" : "Submit"}
       </button>
-      {isSuccess && adminData && (
-        <p className="text-green-600">Welcome, {adminData.email}!</p>
-      )}
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-      <h1>Welcome, {adminData?.email}</h1>
-      <p>Role: {adminData?.role}</p>
     </form>
   );
 }

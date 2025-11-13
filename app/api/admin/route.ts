@@ -34,6 +34,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+
   try {
     const { email, password } = await req.json();
 
@@ -62,3 +63,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const response = NextResponse.json({ message: "Logged out successfully" });
+
+    // Correct cookie deletion
+    response.cookies.delete({
+      name: "token",
+      path: "/",
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    return response;
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    return NextResponse.json({ message }, { status: 500 });
+  }
+}
+

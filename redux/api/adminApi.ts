@@ -27,9 +27,13 @@ export const adminApi = createApi({
   endpoints: (builder) => ({
     // ✅ Verify session / fetch current admin
     getAdmin: builder.query<AdminData, void>({
-      query: () => "/api/admin", // match your actual route
-      providesTags: ["Admin"],
-    }),
+  query: () => ({
+    url: "/api/admin",
+    method: "GET",
+    credentials: "include",
+  }),
+  providesTags: ["Admin"],
+}),
 
     // ✅ Login as admin
     loginAdmin: builder.mutation<LoginResponse, LoginRequest>({
@@ -43,12 +47,12 @@ export const adminApi = createApi({
 
     // Logout as admin
     logoutAdmin: builder.mutation<{ message: string }, void>({
-      query: () => ({
-        url: "/api/admin",
-        method: "POST",
-      }),
-      invalidatesTags: ["Admin"],
-    }),
+  query: () => ({
+    url: "/api/admin",
+    method: "DELETE",
+  }),
+  invalidatesTags: ["Admin"], // <-- triggers cache invalidation
+}),
   }),
 });
 
