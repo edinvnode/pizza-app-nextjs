@@ -1,16 +1,14 @@
 "use client";
 import Image from "next/image";
 import Modal from "@/components/Modal/Modal";
+import Spinner from "../Spinner/Spinner";
+import Form from "../Form/Form";
 import { useRef, useEffect } from "react";
 import { PizzaType } from "@/app/page";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../redux/store";
 import { pizzaDetails, closeModal, pizzaEdit } from "@/redux/slices/modalSlice";
 import { useDeletePizzaMutation } from "@/redux/api/pizzaApi";
-import Spinner from "../Spinner/Spinner";
-import PizzaForm from "../Form/Form";
-import { useGetAdminQuery } from "@/redux/api/adminApi";
-import { useLoginAdminMutation } from "@/redux/api/adminApi";
 
 type PropType = {
   pizzaData: PizzaType;
@@ -24,9 +22,8 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
   const [deletePizza, { isLoading: isDeleting }] = useDeletePizzaMutation();
   const isPizzaDetails = modalType.value === "pizzaDetails";
   const isPizzaForm = modalType.value === "pizzaOrder" || modalType.value === "pizzaEdit";
-  const [loginAdmin, { isSuccess: loginSuccess }] = useLoginAdminMutation();
-  const { data: adminData } = useGetAdminQuery(undefined, { skip: loginSuccess, refetchOnMountOrArgChange: true }); 
-    
+  const isLoggedIn  = useSelector((state: RootState) => state.auth.isLoggedIn);
+
   const handleBorder = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!divRef.current) return;
     e.type === "mouseover"
@@ -35,10 +32,10 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
   };
 
   useEffect(() => {
-  if (adminData) {
-    dispatch(closeModal());
-  }
-}, [adminData, dispatch]);
+    if (isLoggedIn) {
+      dispatch(closeModal());
+    }
+  }, [isLoggedIn, dispatch]);
 
   return (
     <div
@@ -54,6 +51,7 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
           width={250}
           height={250}
           className="w-[250px] h-[250px] object-cover"
+          priority
         />
       ) : (
         <Spinner size={200} />
@@ -67,7 +65,7 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
             🍕 View
           </button>
 
-          {adminData && (
+          {isLoggedIn && (
             <>
               <button
                 className="cursor-pointer bg-green-300 text-yellow-800 font-bold px-4 py-2 rounded-lg shadow-md hover:bg-green-400 transition w-24 h-12 text-base"
@@ -122,9 +120,9 @@ const Card: React.FC<PropType> = ({ pizzaData }) => {
             modalType.value === "pizzaOrder" || modalType.value === "pizzaEdit"
           }
           closeModal={() => dispatch(closeModal())}
-          title={adminData ? modalType.value === "pizzaOrder" ? "Add 🍕" : "Edit 🍕" : "Login 🍕"}
+          title={isLoggedIn ? modalType.value === "pizzaOrder" ? "Add 🍕" : "Edit 🍕" : "Login 🍕"}
         >
-          <PizzaForm />
+          <Form />
         </Modal>
       }
     </div>

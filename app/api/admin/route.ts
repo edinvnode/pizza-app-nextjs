@@ -1,4 +1,4 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -12,9 +12,11 @@ interface AdminPayload {
 const cookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  maxAge: 60 * 60, 
+  maxAge: 60 * 60,
   path: "/",
-  sameSite: "strict" as const,
+  sameSite: (process.env.NODE_ENV === "production" ? "strict" : "lax") as
+    | "strict"
+    | "lax",
 };
 
 function unauthorized() {
@@ -22,6 +24,7 @@ function unauthorized() {
 }
 
 export async function GET(req: NextRequest) {
+
   const token = req.cookies.get("token")?.value;
   if (!token) return unauthorized();
 
@@ -34,16 +37,12 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-
   try {
     const { email, password } = await req.json();
 
     if (email !== process.env.ADMIN_EMAIL) return unauthorized();
 
-    const isValid = await bcrypt.compare(
-      password,
-      process.env.ADMIN_PASSWORD_HASH!
-    );
+    const isValid = await bcrypt.compare(password, process.env.ADMIN_PASSWORD_HASH!);
     if (!isValid) return unauthorized();
 
     const token = jwt.sign({ email, role: "admin" }, process.env.JWT_SECRET!, {
@@ -55,8 +54,8 @@ export async function POST(req: NextRequest) {
       email,
       role: "admin",
     });
-    response.cookies.set("token", token, cookieOptions);
 
+    response.cookies.set("token", token, cookieOptions);
     return response;
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Unknown error";
@@ -64,11 +63,10 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function DELETE(req: NextRequest) {
+export async function DELETE() {
   try {
     const response = NextResponse.json({ message: "Logged out successfully" });
 
-    // Correct cookie deletion
     response.cookies.delete({
       name: "token",
       path: "/",
@@ -83,4 +81,3 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ message }, { status: 500 });
   }
 }
-

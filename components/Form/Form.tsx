@@ -1,13 +1,10 @@
-import { useState, useRef, FormEvent, ChangeEvent, useEffect } from "react";
-import {
-  useAddPizzaMutation,
-  useEditPizzaMutation,
-} from "@/redux/api/pizzaApi";
-import Spinner from "../Spinner/Spinner";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { useState, useRef, FormEvent, ChangeEvent } from "react";
+import { useAddPizzaMutation, useEditPizzaMutation } from "@/redux/api/pizzaApi";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "../../redux/store";
 import { useLoginAdminMutation } from "@/redux/api/adminApi";
-import { useGetAdminQuery } from "@/redux/api/adminApi";
+import { setLoggedIn } from "@/redux/slices/authSlice";
+import Spinner from "../Spinner/Spinner";
 
 interface FormData {
   name?: string;
@@ -18,7 +15,9 @@ interface FormData {
   password?: string;
 }
 
-export default function PizzaForm() {
+export default function Form() {
+
+  // --- Form state ---
   const [formData, setFormData] = useState<FormData>({
     name: "",
     price: 0.0,
@@ -29,48 +28,40 @@ export default function PizzaForm() {
   });
 
   // --- Local state ---
-const [submitting, setSubmitting] = useState(false);
-const fileInputRef = useRef<HTMLInputElement>(null);
-const numberRef = useRef<HTMLInputElement>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const numberRef = useRef<HTMLInputElement>(null);
 
-// --- API hooks ---
-const [addPizza] = useAddPizzaMutation();
-const [editPizza] = useEditPizzaMutation();
-const [loginAdmin, { error: loginError, isError }] = useLoginAdminMutation();
-const { data: adminData } = useGetAdminQuery();
+  // --- API hooks ---
+  const [addPizza] = useAddPizzaMutation();
+  const [editPizza] = useEditPizzaMutation();
+  const [loginAdmin] = useLoginAdminMutation();
 
-// --- Redux selector ---
-const modalType = useSelector((state: RootState) => state.modalType);
+  // --- Redux selector ---
+  const modalType = useSelector((state: RootState) => state.modalType);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const dispatch = useDispatch<AppDispatch>();
 
-// --- Form data ---
-const { name, price, image, description, email, password } = formData;
+  // --- Form data ---
+  const { name, price, image, description, email, password } = formData;
 
-// --- Mode flags ---
-const isAddMode = modalType.value === "pizzaOrder";
-const isEditMode = modalType.value === "pizzaEdit";
-const isLoginMode = !adminData;
+  // --- Mode flags ---
+  const isAddMode = modalType.value === "pizzaOrder";
+  const isEditMode = modalType.value === "pizzaEdit";
+  const isLoginMode = !isLoggedIn;
 
-// --- Validation flags ---
-const isAddInvalid = isAddMode && (!name || !price || !image || !description);
-const isEditInvalid = isEditMode && !name && !price && !image && !description;
-const isLoginInvalid = !email || !password;
+  // --- Validation flags ---
+  const isAddInvalid = isAddMode && (!name || !price || !image || !description);
+  const isEditInvalid = isEditMode && !name && !price && !image && !description;
+  const isLoginInvalid = !email || !password;
 
-// --- Button disabled state ---
-const btnDisabled = submitting || (isLoginMode ? isLoginInvalid : isAddInvalid || isEditInvalid);
+  // --- Button disabled state ---
+  const btnDisabled =
+    submitting ||
+    (isLoginMode ? isLoginInvalid : isAddInvalid || isEditInvalid);
 
-// --- Error message helper ---
-const errorMessage = (() => {
-  if (isError && loginError && "data" in loginError) {
-    return (loginError.data as { message?: string }).message || "Invalid credentials";
-  }
-  return null;
-})();
-
-
-  type InputElements =
-    | HTMLInputElement
-    | HTMLTextAreaElement
-    | HTMLSelectElement;
+  type InputElements = | HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
 
   const handleChange = (e: ChangeEvent<InputElements>) => {
     const target = e.target;
@@ -84,47 +75,50 @@ const errorMessage = (() => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setSubmitting(true);
-
-    const data = Object.entries({
-      name,
-      price: price?.toString(),
-      description,
-      email,
-      password,
-    }).reduce((formData, [key, value]) => {
-      if (value) formData.append(key, value);
-      return formData;
-    }, new FormData());
-
-    if (image instanceof File) data.append("file", image);
+    setErrorMessage(null);
 
     try {
+      const formData = Object.entries({
+        name,
+        price: price?.toString(),
+        description,
+        email,
+        password,
+      }).reduce((fd, [key, value]) => {
+        if (value) fd.append(key, value);
+        return fd;
+      }, new FormData());
+
+      if (image instanceof File) {
+        formData.append("file", image);
+      }
+
       if (isLoginMode) {
-        await loginAdmin({ email: email ?? "", password: password ?? "" });
+        const result = await loginAdmin({
+          email: email ?? "",
+          password: password ?? "",
+        }).unwrap();
+
+        dispatch(setLoggedIn({ email: result.email, role: result.role }));
         return;
       }
 
-      const pizzaAction = isAddMode
-        ? addPizza(data).unwrap()
-        : editPizza({ id: modalType.selectedPizza!.id, data }).unwrap();
-      await pizzaAction;
-
       if (isAddMode) {
+        await addPizza(formData).unwrap();
         setFormData({ name: "", price: 0.0, image: "", description: "" });
+      } else if (modalType.selectedPizza) {
+        await editPizza({
+          id: modalType.selectedPizza.id,
+          data: formData,
+        }).unwrap();
       }
 
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
-
-      setTimeout(() => setSubmitting(false), 1000);
-    } catch (err) {
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (err: any) {
       const action = isLoginMode ? "login" : isAddMode ? "add" : "edit";
-      console.error(
-        `Failed to ${action} pizza: ${err instanceof Error ? err.message : err}`
-      );
+      const message = err?.data?.message ?? err?.error ?? (err instanceof Error ? err.message : "Unknown error");
+      setErrorMessage(`Failed to ${action}: ${message}`);
     } finally {
       setSubmitting(false);
     }
