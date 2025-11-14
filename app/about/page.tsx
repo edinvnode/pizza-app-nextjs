@@ -74,10 +74,10 @@ export default function About() {
         <div className="grid grid-cols-1 md:w-1/2">
           <Image
             src="/images/torta1.jpeg"
-            alt="Tota"
+            alt="Torta"
             height={1250}
             width={850}
-            className="rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 object-cover border-white"
+            className="rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 object-cover border-white h-188"
           />
         </div>
 
@@ -121,10 +121,12 @@ export default function About() {
       </section>
 
       {/* Google Map */}
-      <div className="my-12 w-full flex justify-center">
+      <div className="my-12 w-full h-full flex justify-center">
         <iframe
-          src="https://maps.google.com/maps?width=800&height=500&hl=en&q=Adija%20Mulabegovi%C4%87a%206&t=&z=14&ie=UTF8&iwloc=B&output=embed"
+          src="https://maps.google.com/maps?width=1000&&height=600&hl=en&q=Adija%20Mulabegovi%C4%87a%206&t=&z=14&ie=UTF8&iwloc=B&output=embed"
           className="rounded-md shadow-2xl"
+          width="1075"
+          height="400"
         ></iframe>
       </div>
 
