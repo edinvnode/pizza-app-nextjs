@@ -14,7 +14,6 @@ export default function Contact() {
     podaciZaDostavu: '',
     email: '',
     brojTelefona: '',
-    datumPreuzimanja: '',
     dodatniOpis: '',
     vrstePlacanja: '',
   });
@@ -27,7 +26,6 @@ export default function Contact() {
     formData.podaciZaDostavu === '' ||
     formData.email === '' ||
     formData.brojTelefona === '' ||
-    formData.datumPreuzimanja === '' ||
     formData.dodatniOpis === '' ||
     formData.vrstePlacanja === '' ||
     submitting;
@@ -66,7 +64,7 @@ export default function Contact() {
         podaciZaDostavu: '',
         email: '',
         brojTelefona: '',
-        datumPreuzimanja: '',
+
         dodatniOpis: '',
         vrstePlacanja: '',
       });
@@ -82,29 +80,6 @@ export default function Contact() {
       setSubmitting(false);
     }
   };
-  /*
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    try {
-      const res = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await res.json();
-
-      if (!result.success) {
-        alert('Došlo je do greške pri slanju.');
-        return;
-      }
-
-      alert('Narudžba uspješno poslana!');
-    } catch (error) {
-      alert('Greška pri povezivanju sa serverom.');
-    }
-  };*/
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-pink-200 ">
@@ -199,19 +174,6 @@ export default function Contact() {
           name="brojTelefona"
           onChange={handleChange}
           value={formData.brojTelefona}
-        />
-
-        <label className="">Datum preuzimanja torte:</label>
-        <div className="text-sm text-gray-600">
-          Datum kada bi došli po tortu ako je osobno preuzimate u trgovini
-          Paketić.
-        </div>
-        <input
-          type="date"
-          className="my-2 border border-black"
-          name="datumPreuzimanja"
-          onChange={handleChange}
-          value={formData.datumPreuzimanja}
         />
 
         <label className="">Dodatni opis:</label>
