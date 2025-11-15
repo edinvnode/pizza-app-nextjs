@@ -10,8 +10,6 @@ export default function Contact() {
     temaTorte: '',
     brojKriskica: '',
     bojaKriskica: '',
-    bojaMasnice: '',
-    slaganjeTorte: '',
     preuzimanje: '',
     podaciZaDostavu: '',
     email: '',
@@ -25,8 +23,6 @@ export default function Contact() {
     formData.temaTorte === '' ||
     formData.brojKriskica === '' ||
     formData.bojaKriskica === '' ||
-    formData.bojaMasnice === '' ||
-    formData.slaganjeTorte === '' ||
     formData.preuzimanje === '' ||
     formData.podaciZaDostavu === '' ||
     formData.email === '' ||
@@ -66,8 +62,6 @@ export default function Contact() {
         temaTorte: '',
         brojKriskica: '',
         bojaKriskica: '',
-        bojaMasnice: '',
-        slaganjeTorte: '',
         preuzimanje: '',
         podaciZaDostavu: '',
         email: '',
@@ -88,6 +82,29 @@ export default function Contact() {
       setSubmitting(false);
     }
   };
+  /*
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await res.json();
+
+      if (!result.success) {
+        alert('Došlo je do greške pri slanju.');
+        return;
+      }
+
+      alert('Narudžba uspješno poslana!');
+    } catch (error) {
+      alert('Greška pri povezivanju sa serverom.');
+    }
+  };*/
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-pink-200 ">
@@ -141,30 +158,6 @@ export default function Contact() {
           <option value="Šarena - sve boje">Šarena - sve boje</option>
           <option value="Bijela">Bijela</option>
           <option value="Žuta">Žuta</option>
-        </select>
-
-        <label className="">Boja mašnice:</label>
-        <select
-          className="my-2 border border-black"
-          name="bojaMasnice"
-          onChange={handleChange}
-          value={formData.bojaMasnice}
-        >
-          <option value=""></option>
-          <option value="Crvena">Crvena</option>
-          <option value="Žuta">Žuta</option>
-        </select>
-
-        <label className="">Slaganje torte:</label>
-        <select
-          className="my-2 border border-black"
-          name="slaganjeTorte"
-          onChange={handleChange}
-          value={formData.slaganjeTorte}
-        >
-          <option value=""></option>
-          <option value="Da (0,08€/kriški)">Da (0,08€/kriški)</option>
-          <option value="Ne">Ne</option>
         </select>
 
         <label>Preuzimanje:</label>
