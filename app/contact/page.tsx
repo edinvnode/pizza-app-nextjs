@@ -8,8 +8,8 @@ export default function Contact() {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     temaTorte: '',
-    brojKriskica: '',
-    bojaKriskica: '',
+    brojKomada: '',
+    bojaKomada: '',
     preuzimanje: '',
     podaciZaDostavu: '',
     email: '',
@@ -21,8 +21,8 @@ export default function Contact() {
 
   const isDisabled =
     formData.temaTorte === '' ||
-    formData.brojKriskica === '' ||
-    formData.bojaKriskica === '' ||
+    formData.brojKomada === '' ||
+    formData.bojaKomada === '' ||
     formData.preuzimanje === '' ||
     formData.podaciZaDostavu === '' ||
     formData.email === '' ||
@@ -60,8 +60,8 @@ export default function Contact() {
 
       setFormData({
         temaTorte: '',
-        brojKriskica: '',
-        bojaKriskica: '',
+        brojKomada: '',
+        bojaKomada: '',
         preuzimanje: '',
         podaciZaDostavu: '',
         email: '',
@@ -120,25 +120,25 @@ export default function Contact() {
           value={formData.temaTorte}
         >
           <option value=""></option>
-          <option value="Bez naljepnica (0,56eur/kriški)">
-            Bez naljepnica (0,56eur/kriški)
+          <option value="Bez naljepnica (1.5KM/komadu)">
+            Bez naljepnica (1.5KM/komadu)
           </option>
-          <option value="A je to (0,72€/kriški)">A je to (0,72€/kriški)</option>
-          <option value="Ariel mala sirena (0,72€/kriški)">
-            Ariel mala sirena (0,72€/kriški)
+          <option value="A je to (3KM/kriški)">A je to (3KM/kriški)</option>
+          <option value="Ariel mala sirena (3KM/kriški)">
+            Ariel mala sirena (3KM/kriški)
           </option>
-          <option value="Batman (0,72€/kriški)">Batman (0,72€/kriški)</option>
-          <option value="Uzorak po Vašem izboru (0,72€/kriški)">
-            Uzorak po Vašem izboru (0,72€/kriški)
+          <option value="Batman (3KM/kriški)">Batman (3KM/kriški)</option>
+          <option value="Uzorak po Vašem izboru (3KM/kriški)">
+            Uzorak po Vašem izboru (3KM/kriški)
           </option>
         </select>
 
-        <label className="">Broj kriškica:</label>
+        <label className="">Broj komada:</label>
         <select
           className="my-2 border border-black"
-          name="brojKriskica"
+          name="brojKomada"
           onChange={handleChange}
-          value={formData.brojKriskica}
+          value={formData.brojKomada}
         >
           <option value=""></option>
           <option value="10">10</option>
@@ -147,12 +147,12 @@ export default function Contact() {
           <option value="20">20</option>
         </select>
 
-        <label className="">Boja kriškica:</label>
+        <label className="">Boja komada:</label>
         <select
           className="my-2 border border-black"
-          name="bojaKriskica"
+          name="bojaKomada"
           onChange={handleChange}
-          value={formData.bojaKriskica}
+          value={formData.bojaKomada}
         >
           <option value=""></option>
           <option value="Šarena - sve boje">Šarena - sve boje</option>
@@ -168,8 +168,8 @@ export default function Contact() {
           value={formData.preuzimanje}
         >
           <option value=""></option>
-          <option value="Osobno preuzimanje trgovina Paketić (plaćanje gotovinom)">
-            Osobno preuzimanje trgovina Paketić (plaćanje gotovinom)
+          <option value="Osobno preuzimanje trgovina">
+            Osobno preuzimanje (plaćanje gotovinom)
           </option>
         </select>
 

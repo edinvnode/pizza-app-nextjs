@@ -14,8 +14,8 @@ export async function POST(req: Request) {
       html: `
         <h2>Nova narudžba torte</h2>
         <p><strong>Tema torte:</strong> ${data.temaTorte}</p>
-        <p><strong>Broj kriškica:</strong> ${data.brojKriskica}</p>
-        <p><strong>Boja kriškica:</strong> ${data.bojaKriskica}</p>
+        <p><strong>Broj komada:</strong> ${data.brojKomada}</p>
+        <p><strong>Boja komada:</strong> ${data.bojKomada}</p>
         <p><strong>Preuzimanje:</strong> ${data.preuzimanje}</p>
         <p><strong>Podaci za dostavu:</strong> ${data.podaciZaDostavu}</p>
         <p><strong>Email:</strong> ${data.email}</p>

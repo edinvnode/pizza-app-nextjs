@@ -6,6 +6,8 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import confetti from 'canvas-confetti';
+
 const messages = [
   {
     id: '1',
@@ -63,6 +65,15 @@ export default function About() {
       setIndex((prev) => (prev + 1) % messages.length);
     }, 3000); // change every 3s
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    // Little blast on page load
+    confetti({
+      particleCount: 150,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
   }, []);
 
   return (
