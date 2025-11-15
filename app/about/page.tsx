@@ -77,7 +77,7 @@ export default function About() {
   }, []);
 
   return (
-    <div className="w-screen min-h-screen bg-gradient-to-b from-yellow-50 to-gray-100 flex flex-col items-center">
+    <div className="w-screen min-h-screen bg-gradient-to-b from-yellow-50 to-pink-200 flex flex-col items-center">
       {/* Header */}
       <header className="text-center py-10">
         <h1 className="text-5xl font-extrabold text-gray-800 drop-shadow-md tracking-wide">
