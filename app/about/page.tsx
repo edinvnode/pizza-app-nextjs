@@ -80,10 +80,10 @@ export default function About() {
     <div className="w-screen min-h-screen bg-gradient-to-b from-blue-100 to-pink-200 flex flex-col items-center">
       {/* Header */}
       <header className="text-center py-10">
-        <h1 className="text-5xl font-extrabold text-gray-800 drop-shadow-md tracking-wide">
+        <h1 className="text-5xl font-extrabold text-gray-800 drop-shadow-md tracking-wide font-playfair">
           Papirna čarolija
         </h1>
-        <p className="text-gray-600 mt-3 text-lg">
+        <p className="text-gray-600 mt-3 text-lg font-poppins">
           Ručno rađene torte koje donose osmijeh i radost!
         </p>
       </header>
@@ -102,7 +102,9 @@ export default function About() {
 
         {/* Description */}
         <div className="md:w-1/2 bg-white rounded-lg shadow-md p-6 text-gray-700 leading-relaxed">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">O meni</h2>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4 font-poppins">
+            O meni
+          </h2>
           <p className="mb-3">
             Zovem se Merisa, i već dugo godina izrađujem torte od papira s puno
             ljubavi i pažnje na detalje. Sve je počelo kao hobi – a pretvorilo
@@ -169,7 +171,7 @@ export default function About() {
 
       {/* Contact Section (White Background with Gray Theme) */}
       <footer className="bg-white text-gray-800 w-full py-10 flex flex-col items-center space-y-3 border-t border-gray-200">
-        <h2 className="text-2xl font-semibold text-gray-800">
+        <h2 className="text-2xl font-semibold text-gray-800 font-poppins">
           Kontaktirajte nas
         </h2>
         <div className="flex flex-wrap justify-center gap-6 text-lg">

@@ -20,7 +20,6 @@ export async function POST(req: Request) {
         <p><strong>Podaci za dostavu:</strong> ${data.podaciZaDostavu}</p>
         <p><strong>Email:</strong> ${data.email}</p>
         <p><strong>Broj telefona:</strong> ${data.brojTelefona}</p>
-        <p><strong>Datum preuzimanja:</strong> ${data.datumPreuzimanja}</p>
         <p><strong>Dodatni opis:</strong> ${data.dodatniOpis}</p>
         <p><strong>Vrsta plaćanja:</strong> ${data.vrstePlacanja}</p>
       `,
