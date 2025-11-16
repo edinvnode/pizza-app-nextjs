@@ -8,6 +8,7 @@ export default function Contact() {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     temaTorte: '',
+    cijena: '',
     brojKomada: '',
     bojaKomada: '',
     preuzimanje: '',
@@ -20,6 +21,7 @@ export default function Contact() {
 
   const isDisabled =
     formData.temaTorte === '' ||
+    formData.cijena === '' ||
     formData.brojKomada === '' ||
     formData.bojaKomada === '' ||
     formData.preuzimanje === '' ||
@@ -58,6 +60,7 @@ export default function Contact() {
 
       setFormData({
         temaTorte: '',
+        cijena: '',
         brojKomada: '',
         bojaKomada: '',
         preuzimanje: '',
@@ -95,16 +98,32 @@ export default function Contact() {
           value={formData.temaTorte}
         >
           <option value=""></option>
-          <option value="Bez naljepnica (1.5KM/komadu)">
-            Bez naljepnica (1.5KM/komadu)
+
+          <option value="Frozen">Frozen</option>
+          <option value="Paw Patrol">Paw Patrol</option>
+          <option value="Barbie">Barbie</option>
+          <option value="Minnie mouse">Minnie mouse</option>
+          <option value="Spiderman">Spiderman</option>
+          <option value="Nindža kornjače">Nindža kornjače</option>
+          <option value="Cars">Cars</option>
+          <option value="Mickey mouse">Mickey mouse</option>
+          <option value="Minecraft">Minecraft</option>
+          <option value="Ili po drugoj želji">Ili po drugoj želji</option>
+        </select>
+
+        <label className="">Cijena:</label>
+        <select
+          className="my-2 border border-black"
+          name="cijena"
+          onChange={handleChange}
+          value={formData.cijena}
+        >
+          <option value=""></option>
+          <option value="Bez slatkiša (1.5KM/komad)">
+            Bez slatkiša (1.5KM/komad)
           </option>
-          <option value="A je to (3KM/kriški)">A je to (3KM/kriški)</option>
-          <option value="Ariel mala sirena (3KM/kriški)">
-            Ariel mala sirena (3KM/kriški)
-          </option>
-          <option value="Batman (3KM/kriški)">Batman (3KM/kriški)</option>
-          <option value="Uzorak po Vašem izboru (3KM/kriški)">
-            Uzorak po Vašem izboru (3KM/kriški)
+          <option value="Sa slatkišima (ovisno o vrsti – 3KM / 3.5KM / 4KM komad)">
+            Sa slatkišima (ovisno o vrsti – 3KM / 3.5KM / 4KM komad)
           </option>
         </select>
 
@@ -120,8 +139,10 @@ export default function Contact() {
           <option value="12">12</option>
           <option value="14">14</option>
           <option value="20">20</option>
+          <option value="24">24</option>
+          <option value="30">30</option>
+          <option value="36">36</option>
         </select>
-
         <label className="">Boja komada:</label>
         <select
           className="my-2 border border-black"
@@ -134,7 +155,6 @@ export default function Contact() {
           <option value="Bijela">Bijela</option>
           <option value="Žuta">Žuta</option>
         </select>
-
         <label>Preuzimanje:</label>
         <select
           className="my-2 border border-black"
@@ -147,7 +167,6 @@ export default function Contact() {
             Osobno preuzimanje (plaćanje gotovinom)
           </option>
         </select>
-
         <label className="">Podaci za dostavu:</label>
         <textarea
           className="my-2 border border-black"
@@ -155,7 +174,6 @@ export default function Contact() {
           onChange={handleChange}
           value={formData.podaciZaDostavu}
         />
-
         <label className="">E-mail adresa:</label>
         <input
           type="email"
@@ -165,7 +183,6 @@ export default function Contact() {
           onChange={handleChange}
           value={formData.email}
         />
-
         <label className="">Broj telefona za kontakt:</label>
         <input
           type="text"
@@ -175,7 +192,6 @@ export default function Contact() {
           onChange={handleChange}
           value={formData.brojTelefona}
         />
-
         <label className="">Dodatni opis:</label>
         <textarea
           className="my-2 border border-black"
@@ -183,7 +199,6 @@ export default function Contact() {
           onChange={handleChange}
           value={formData.dodatniOpis}
         />
-
         <label className="">Vrste plaćanja:</label>
         <select
           className="my-2 border border-black"
@@ -200,7 +215,6 @@ export default function Contact() {
             Transakcijski po ponudi
           </option>
         </select>
-
         <button
           type="submit"
           className={`rounded-lg mt-4 py-2 ${
@@ -212,7 +226,6 @@ export default function Contact() {
         >
           {submitting ? <Spinner size={30} /> : 'Pošalji'}
         </button>
-
         <p
           className={`text-center mt-2 ${
             isDisabled ? 'text-red-500' : 'text-green-500'
