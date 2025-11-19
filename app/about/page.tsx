@@ -177,33 +177,57 @@ export default function About() {
         <div className="flex flex-wrap justify-center gap-6 text-lg">
           <Link
             href="/contact"
-            className="text-gray-800 hover:text-gray-600 transition-colors"
+            className="text-gray-800 hover:text-gray-600 transition-colors flex items-center"
           >
             Contact 💬
           </Link>
           <Link
             href="https://www.facebook.com/Merisatorte"
-            className="text-gray-800 hover:text-gray-600 transition-colors"
+            className="text-gray-800 hover:text-gray-600 transition-colors flex items-center"
           >
-            Facebook ⓕ
+            Facebook
+            <Image
+              src="/icons/facebook.png"
+              alt="Facebook logo"
+              height={30}
+              width={40}
+            />
           </Link>
           <Link
             href="https://www.facebook.com/TorteodpapiraMery"
-            className="text-gray-800 hover:text-gray-600 transition-colors"
+            className="text-gray-800 hover:text-gray-600 transition-colors flex items-center"
           >
-            Facebook ⓕ
+            Facebook
+            <Image
+              src="/icons/facebook.png"
+              alt="Facebook logo"
+              height={30}
+              width={40}
+            />
           </Link>
           <Link
             href="https://www.instagram.com/pokloni_mery/?igsh=MTVyamtzemMyNnhvYw%3D%3D"
-            className="text-gray-800 hover:text-gray-600 transition-colors"
+            className="text-gray-800 hover:text-gray-600 transition-colors flex items-center"
           >
-            Instagram 🅾
+            Instagram
+            <Image
+              src="/icons/instagram.png"
+              alt="Instagram logo"
+              height={30}
+              width={40}
+            />
           </Link>
           <Link
             href="mailto:meeriisaa@live.com"
-            className="text-gray-800 hover:text-gray-600 transition-colors"
+            className="text-gray-800 hover:text-gray-600 transition-colors flex items-center"
           >
-            Email 📧
+            Email
+            <Image
+              src="/icons/email.png"
+              alt="Email logo"
+              height={30}
+              width={40}
+            />
           </Link>
         </div>
       </footer>
