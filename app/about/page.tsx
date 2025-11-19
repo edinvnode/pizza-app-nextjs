@@ -179,31 +179,31 @@ export default function About() {
             href="/contact"
             className="text-gray-800 hover:text-gray-600 transition-colors"
           >
-            Contact
+            Contact 💬
           </Link>
           <Link
             href="https://www.facebook.com/Merisatorte"
             className="text-gray-800 hover:text-gray-600 transition-colors"
           >
-            Facebook
+            Facebook ⓕ
           </Link>
           <Link
             href="https://www.facebook.com/TorteodpapiraMery"
             className="text-gray-800 hover:text-gray-600 transition-colors"
           >
-            Facebook
+            Facebook ⓕ
           </Link>
           <Link
             href="https://www.instagram.com/pokloni_mery/?igsh=MTVyamtzemMyNnhvYw%3D%3D"
             className="text-gray-800 hover:text-gray-600 transition-colors"
           >
-            Instagram
+            Instagram 🅾
           </Link>
           <Link
             href="mailto:meeriisaa@live.com"
             className="text-gray-800 hover:text-gray-600 transition-colors"
           >
-            Email
+            Email 📧
           </Link>
         </div>
       </footer>
