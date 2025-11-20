@@ -189,8 +189,8 @@ export default function About() {
             <Image
               src="/icons/facebook.png"
               alt="Facebook logo"
-              height={30}
-              width={40}
+              height={20}
+              width={30}
             />
           </Link>
           <Link
@@ -201,8 +201,8 @@ export default function About() {
             <Image
               src="/icons/facebook.png"
               alt="Facebook logo"
-              height={30}
-              width={40}
+              height={20}
+              width={30}
             />
           </Link>
           <Link
@@ -213,8 +213,8 @@ export default function About() {
             <Image
               src="/icons/instagram.png"
               alt="Instagram logo"
-              height={30}
-              width={40}
+              height={20}
+              width={30}
             />
           </Link>
           <Link
@@ -225,8 +225,8 @@ export default function About() {
             <Image
               src="/icons/email.png"
               alt="Email logo"
-              height={30}
-              width={40}
+              height={20}
+              width={30}
             />
           </Link>
         </div>
