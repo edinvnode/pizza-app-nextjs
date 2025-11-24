@@ -44,13 +44,13 @@ const Home: FC = () => {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen flex items-center justify-center">
-      <main className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 place-items-center p-4 mb-18">
+    <main className="bg-gray-50 min-h-screen flex items-center justify-center">
+      <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 place-items-center p-4 mb-18">
         {sortedPizzas.map((pizza) => (
           <Card key={pizza.id} pizzaData={pizza} />
         ))}
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
 

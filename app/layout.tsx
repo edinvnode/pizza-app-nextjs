@@ -20,7 +20,7 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
       <body>
         <ReduxProvider>
           <Header />
-          <main className="flex-1">{children}</main>
+            {children}
           <Footer />
         </ReduxProvider>
       </body>
