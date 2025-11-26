@@ -90,9 +90,9 @@ export default function Contact() {
         className="form-styled flex flex-col border-2 rounded-md p-4 w-full max-w-lg bg-white my-3"
         onSubmit={handleSubmit}
       >
-        <label className="">Tema torte:</label>
+        <label htmlFor="temaTorte">Tema torte:</label>
         <select
-          className="my-2 border border-black"
+          id="temaTorte"
           name="temaTorte"
           onChange={handleChange}
           value={formData.temaTorte}
@@ -111,10 +111,13 @@ export default function Contact() {
           <option value="Ili po drugoj želji">Ili po drugoj želji</option>
         </select>
 
-        <label className="">Cijena:</label>
+        <label className="" htmlFor="cijena">
+          Cijena:
+        </label>
         <select
           className="my-2 border border-black"
           name="cijena"
+          id="cijena"
           onChange={handleChange}
           value={formData.cijena}
         >
@@ -127,10 +130,13 @@ export default function Contact() {
           </option>
         </select>
 
-        <label className="">Broj komada:</label>
+        <label className="" htmlFor="brojKomada">
+          Broj komada:
+        </label>
         <select
           className="my-2 border border-black"
           name="brojKomada"
+          id="brojKomada"
           onChange={handleChange}
           value={formData.brojKomada}
         >
@@ -143,10 +149,13 @@ export default function Contact() {
           <option value="30">30</option>
           <option value="36">36</option>
         </select>
-        <label className="">Boja komada:</label>
+        <label className="" htmlFor="bojaKomada">
+          Boja komada:
+        </label>
         <select
           className="my-2 border border-black"
           name="bojaKomada"
+          id="bojaKomada"
           onChange={handleChange}
           value={formData.bojaKomada}
         >
@@ -155,10 +164,11 @@ export default function Contact() {
           <option value="Bijela">Bijela</option>
           <option value="Žuta">Žuta</option>
         </select>
-        <label>Preuzimanje:</label>
+        <label htmlFor="preuzimanje">Preuzimanje:</label>
         <select
           className="my-2 border border-black"
           name="preuzimanje"
+          id="preuzimanje"
           onChange={handleChange}
           value={formData.preuzimanje}
         >
@@ -167,42 +177,57 @@ export default function Contact() {
             Osobno preuzimanje (plaćanje gotovinom)
           </option>
         </select>
-        <label className="">Podaci za dostavu:</label>
+        <label className="" htmlFor="podaciZaDostavu">
+          Podaci za dostavu:
+        </label>
         <textarea
           className="my-2 border border-black"
           name="podaciZaDostavu"
+          id="podaciZaDostavu"
           onChange={handleChange}
           value={formData.podaciZaDostavu}
         />
-        <label className="">E-mail adresa:</label>
+        <label className="" htmlFor="email">
+          E-mail adresa:
+        </label>
         <input
           type="email"
           className="my-2 border border-black"
           placeholder="Email adresa"
           name="email"
+          id="email"
           onChange={handleChange}
           value={formData.email}
         />
-        <label className="">Broj telefona za kontakt:</label>
+        <label className="" htmlFor="brojTelefona">
+          Broj telefona za kontakt:
+        </label>
         <input
           type="text"
           className="my-2 border border-black"
           placeholder="Broj telefona:"
           name="brojTelefona"
+          id="brojTelefona"
           onChange={handleChange}
           value={formData.brojTelefona}
         />
-        <label className="">Dodatni opis:</label>
+        <label className="" htmlFor="dodatniOpis">
+          Dodatni opis:
+        </label>
         <textarea
           className="my-2 border border-black"
           name="dodatniOpis"
+          id="dodatniOpis"
           onChange={handleChange}
           value={formData.dodatniOpis}
         />
-        <label className="">Vrste plaćanja:</label>
+        <label className="" htmlFor="vrstePlacanja">
+          Vrste plaćanja:
+        </label>
         <select
           className="my-2 border border-black"
           name="vrstePlacanja"
+          id="vrstePlacanja"
           onChange={handleChange}
           value={formData.vrstePlacanja}
         >
