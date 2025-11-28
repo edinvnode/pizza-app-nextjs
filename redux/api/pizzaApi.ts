@@ -5,11 +5,10 @@ export const pizzaApi = createApi({
   reducerPath: "pizzaApi",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-    credentials: "include", 
+    credentials: "include",
   }),
   tagTypes: ["Pizza"],
   endpoints: (builder) => ({
-
     getPizzas: builder.query<PizzaType[], void>({
       query: () => "/api/pizzas",
       providesTags: ["Pizza"],
@@ -24,9 +23,9 @@ export const pizzaApi = createApi({
       invalidatesTags: ["Pizza"],
     }),
 
-    deletePizza: builder.mutation<void, number>({
-      query: (id) => ({
-        url: `/api/pizzas/${id}`,
+    deletePizza: builder.mutation<void, { id: number; sortedBy?: string }>({
+      query: ({ id, sortedBy }) => ({
+        url: `/api/pizzas/${id}${sortedBy ? `?sortedBy=${encodeURIComponent(sortedBy)}` : ""}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Pizza"],

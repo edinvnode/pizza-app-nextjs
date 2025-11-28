@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { pizzaApi } from "./api/pizzaApi";
 import { adminApi } from "./api/adminApi";
+import { mailerApi } from "./api/mailerApi";
 import modalReducer from "./slices/modalSlice";
 import pizzaReducer from "./slices/pizzaDataSlice";
 import authReducer from "./slices/authSlice";
@@ -12,11 +13,13 @@ export const store = configureStore({
     auth: authReducer,
     [pizzaApi.reducerPath]: pizzaApi.reducer,
     [adminApi.reducerPath]: adminApi.reducer,
+    [mailerApi.reducerPath]: mailerApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(pizzaApi.middleware)
-      .concat(adminApi.middleware),
+      .concat(adminApi.middleware)
+      .concat(mailerApi.middleware),
   devTools: process.env.NODE_ENV !== "production"
 });
 

@@ -5,11 +5,14 @@ export type SortOption =
   | "name-desc"
   | "price-asc"
   | "price-desc"
-  | "date-newest"
-  | "date-oldest"
+  | "createdAt-desc"
+  | "createdAt-asc"
   | "default";
 
-export const sortPizzas = (pizzas: PizzaType[], option: SortOption): PizzaType[] => {
+export const sortPizzas = (
+  pizzas: PizzaType[],
+  option: SortOption
+): PizzaType[] => {
   const sorted = [...pizzas];
 
   switch (option) {
@@ -21,12 +24,27 @@ export const sortPizzas = (pizzas: PizzaType[], option: SortOption): PizzaType[]
       return sorted.sort((a, b) => a.price - b.price);
     case "price-desc":
       return sorted.sort((a, b) => b.price - a.price);
-    case "date-newest":
-      return sorted.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-    case "date-oldest":
-      return sorted.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    case "createdAt-desc":
+      return sorted.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+    case "createdAt-asc":
+      return sorted.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
     case "default":
     default:
       return sorted;
   }
+};
+
+export const sortLabels: Record<string, string> = {
+  "name-asc": "Naziv A → Z",
+  "name-desc": "Naziv Z → A",
+  "price-asc": "Cijena Najniža → Najviša",
+  "price-desc": "Cijena Najviša → Najniža",
+  "createdAt-desc": "Najnovije Prvo",
+  "createdAt-asc": "Najstarije Prvo",
 };

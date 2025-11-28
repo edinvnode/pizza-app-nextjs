@@ -4,11 +4,13 @@ import { PizzaType } from "@/app/page";
 interface PizzaState {
   pizzaData: PizzaType[];
   sortedPizzas: PizzaType[];
+  sortValue: string;
 }
 
 const initialState: PizzaState = {
   pizzaData: [],
   sortedPizzas: [],
+  sortValue: "",
 };
 
 export const pizzaSlice = createSlice({
@@ -22,8 +24,11 @@ export const pizzaSlice = createSlice({
     setSortedPizzas: (state, action: PayloadAction<PizzaType[]>) => {
       state.sortedPizzas = [...action.payload]; 
     },
+    setSortValue: (state, action: PayloadAction<string>) => {
+      state.sortValue = action.payload;
+    }
   },
 });
 
-export const { setPizzaData, setSortedPizzas } = pizzaSlice.actions;
+export const { setPizzaData, setSortedPizzas, setSortValue } = pizzaSlice.actions;
 export default pizzaSlice.reducer;

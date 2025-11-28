@@ -11,6 +11,8 @@ import { pizzaDetails, closeModal, pizzaEdit } from "@/redux/slices/modalSlice";
 import { useDeletePizzaMutation } from "@/redux/api/pizzaApi";
 import { setLoggedIn, setLoggedOut } from "@/redux/slices/authSlice";
 import { useGetAdminQuery } from "@/redux/api/adminApi";
+import { formatDateBS } from "@/utils/formatDate";
+import toast from "react-hot-toast";
 
 type CardProps = {
   pizzaData: PizzaType;
@@ -20,6 +22,7 @@ const Card: FC<CardProps> = ({ pizzaData }) => {
   const divRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useDispatch<AppDispatch>();
   const [deletePizza, { isLoading: isDeleting }] = useDeletePizzaMutation();
+  const sortValue = useSelector((state: RootState) => state.pizzaData.sortValue);
 
   const { modalType, isLoggedIn } = useSelector(
     (state: RootState) => ({
@@ -33,7 +36,9 @@ const Card: FC<CardProps> = ({ pizzaData }) => {
   const { data } = useGetAdminQuery();
 
   const isPizzaDetails = modalType.value === "pizzaDetails";
-  const isPizzaForm = ["pizzaOrder", "pizzaEdit"].includes(modalType.value ?? "");
+  const isPizzaForm = ["pizzaAdd", "pizzaEdit", "pizzaOrder"].includes(
+    modalType.value ?? ""
+  );
 
   const handleBorder = useCallback((hover: boolean) => {
     if (!divRef.current) return;
@@ -56,14 +61,15 @@ const Card: FC<CardProps> = ({ pizzaData }) => {
   }, [handleLogoutTimer, isLoggedIn, dispatch]);
 
   const getModalTitle = () => {
-    if (!isLoggedIn) return "Login 🍕";
-    if (modalType.value === "pizzaOrder") return "Add 🍕";
-    if (modalType.value === "pizzaEdit") return "Edit 🍕";
+    if (!isLoggedIn && modalType.value !== "pizzaOrder") return "Prijava 🎂";
+    if (modalType.value === "pizzaAdd") return "Dodaj 🎂";
+    if (modalType.value === "pizzaEdit") return "Uredi 🎂";
+    if (modalType.value === "pizzaOrder") return "Naruči 🎂";
     return "";
   };
 
-  const buttonClass = (bg: string, text: string) =>
-    `cursor-pointer ${bg} ${text} font-bold px-4 py-2 rounded-lg shadow-md hover:brightness-110 transition w-24 h-12 text-base`;
+  const buttonClass = (bg: string) =>
+    ` ${bg} text-gray-700 font-bold px-4 py-2 rounded-lg shadow-md hover:brightness-110 transition h-10 ${isLoggedIn ? "w-25 text-sm" : "w-27 text-base"} cursor-pointer`;
 
   return (
     <div
@@ -88,27 +94,32 @@ const Card: FC<CardProps> = ({ pizzaData }) => {
       <div className="flex gap-2 absolute top-75">
         <button
           aria-label="View pizza"
-          className={buttonClass("bg-yellow-300", "text-red-700")}
+          className={buttonClass("bg-yellow-300")}
           onClick={() => dispatch(pizzaDetails(pizzaData))}
         >
-          🍕 View
+          Otvori 🎂
         </button>
 
         {isLoggedIn && (
           <>
             <button
               aria-label="Edit pizza"
-              className={buttonClass("bg-green-300", "text-yellow-800")}
+              className={buttonClass("bg-green-300")}
               onClick={() => dispatch(pizzaEdit(pizzaData))}
             >
-              🧀 Edit
+              Uredi 🍰
             </button>
             <button
               aria-label="Delete pizza"
-              className="cursor-pointer bg-red-400 text-yellow-800 font-bold px-4 py-2 rounded-lg shadow-md hover:bg-red-600 transition w-27 h-12 text-base"
-              onClick={async () => await deletePizza(pizzaData.id).unwrap()}
+              className={buttonClass("bg-red-400")}
+              onClick={async () => {
+                const [key, value] = sortValue.split("-");
+                const sortedBy = { [key]: value };
+                await deletePizza({ id: pizzaData.id, sortedBy: JSON.stringify(sortedBy)}).unwrap(); 
+                toast.success("Torta uspješno izbrisana");
+            }}
             >
-              🗑️ Delete
+              Izbriši 🗑️
             </button>
           </>
         )}
@@ -118,28 +129,25 @@ const Card: FC<CardProps> = ({ pizzaData }) => {
         <Modal
           isModalOpen={isPizzaDetails}
           closeModal={() => dispatch(closeModal())}
-          title="🍕 Details"
+          title="Detalji 🎂"
         >
           <p>
-            <strong>Name: </strong>
+            <strong>Naziv: </strong>
             {modalType.selectedPizza?.name ?? "Name"}
           </p>
           <hr />
           <p className="mt-2">
-            <strong>Price: </strong>${modalType.selectedPizza?.price ?? "Price"}
+            <strong>Cijena: </strong>
+            {modalType.selectedPizza?.price ?? "Price"} KM
           </p>
           <hr />
           <p className="mt-2">
-            <strong>Date: </strong>
-            {createdAt.toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
+            <strong>Objavljeno: </strong>
+            {formatDateBS(createdAt)}
           </p>
           <hr />
           <p className="mt-2">
-            <strong>Description: </strong>
+            <strong>Opis: </strong>
             {modalType.selectedPizza?.description ?? "Description"}
           </p>
         </Modal>

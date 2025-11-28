@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Paper Cakes Gallery – Next.js App
 
-## Getting Started
+A simple and modern gallery website built with Next.js 15.5.3 and Tailwind CSS 4.1.
+The app displays high-quality images of handcrafted paper cakes in a clean, responsive layout.
 
-First, run the development server:
+Features
 
-```bash
+⚡ Built on the latest Next.js 15.5.3
+
+🎨 Styled with Tailwind CSS 4.1
+
+🖼️ Responsive image gallery using next/image
+
+📱 Mobile-friendly layout
+
+🔧 Zero-config local development
+
+Install dependencies:
+
+npm install
+
+Running the App Locally
+
+Start the development server:
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app will be available at:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Technologies Used
 
-## Learn More
+Next.js 15.5.3
 
-To learn more about Next.js, take a look at the following resources:
+React
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Tailwind CSS 4.1
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+TypeScript / JavaScript (depending on your project)
 
-## Deploy on Vercel
+next/image for optimized images
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Build for Production
+npm run build
+npm start
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Customization
+
+Add your own images inside the /public/images/ folder
+
+Update the gallery component to include more items
+
+Tailwind configuration is fully customizable via tailwind.config.js
+
+License
+
+This project is free to use for personal or educational purposes.

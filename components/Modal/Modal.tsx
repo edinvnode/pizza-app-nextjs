@@ -28,7 +28,7 @@ const Modal: React.FC<ModalProps> = ({
       <div
         role="dialog"
         aria-modal="true"
-        className="relative bg-white rounded-2xl shadow-lg p-6 z-10 text-xl w-full max-w-md"
+        className="relative bg-gradient-to-b from-blue-100 to-pink-200 rounded-2xl shadow-lg p-6 z-10 text-xl w-full max-w-sm sm:max-w-md overflow-x-auto sm:overflow-visible"
       >
         <h1 className="text-3xl text-center font-bold text-gray-900 mb-5">
           {title}

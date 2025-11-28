@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PizzaType } from "@/app/page";
 
-export type ModalValue = "pizzaOrder" | "pizzaDetails" | "pizzaEdit" | null;
+export type ModalValue = "pizzaAdd" | "pizzaDetails" | "pizzaEdit" | "pizzaOrder" | null;
 
 interface ModalState {
   value: ModalValue;
@@ -17,8 +17,8 @@ const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    pizzaOrder: (state, action: PayloadAction<PizzaType | undefined>) => {
-      state.value = "pizzaOrder";
+    pizzaAdd: (state, action: PayloadAction<PizzaType | undefined>) => {
+      state.value = "pizzaAdd";
       state.selectedPizza = action.payload;
     },
     pizzaDetails: (state, action: PayloadAction<PizzaType | undefined>) => {
@@ -29,6 +29,10 @@ const modalSlice = createSlice({
       state.value = "pizzaEdit";
       state.selectedPizza = action.payload;
     },
+    pizzaOrder: (state, action: PayloadAction<PizzaType | undefined>) => {
+      state.value = "pizzaOrder";
+      state.selectedPizza = action.payload;
+    },
     closeModal: (state) => {
       state.value = null;
       state.selectedPizza = undefined;
@@ -36,6 +40,6 @@ const modalSlice = createSlice({
   },
 });
 
-export const { pizzaOrder, pizzaDetails, pizzaEdit, closeModal } =
+export const { pizzaAdd, pizzaDetails, pizzaEdit, pizzaOrder, closeModal } =
   modalSlice.actions;
 export default modalSlice.reducer;

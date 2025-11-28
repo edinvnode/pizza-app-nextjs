@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { saveFile } from "./utils/fileupload";
+import { cookieOptions } from "./utils/cookies";
 
 const prisma = new PrismaClient();
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const pizzas = await prisma.pizza.findMany({
-      orderBy: { createdAt: "desc" },
-    });
+    const cookieSortedBy = req.cookies.get("sortedBy")?.value || "{}";
+    const sortedBy = JSON.parse(cookieSortedBy);
+    const pizzas = await prisma.pizza.findMany({ orderBy: sortedBy });
     return NextResponse.json(pizzas);
   } catch (error) {
     console.error(error);
@@ -27,6 +28,7 @@ export async function POST(req: NextRequest) {
     const price = parseFloat(priceStr);
     const file = formData.get("file") as File;
     const description = formData.get("description") as string;
+    const sortedBy = JSON.parse(formData.get("sortedBy") as string);
 
     if (!name || isNaN(price) || !file || !description) {
       return NextResponse.json({ error: "Invalid data" }, { status: 400 });
@@ -38,7 +40,13 @@ export async function POST(req: NextRequest) {
       data: { name, price, image: imageUrl, description },
     });
 
-    return NextResponse.json(pizza);
+    const response = NextResponse.json(pizza);
+    response.cookies.set("sortedBy", JSON.stringify(sortedBy), {
+      ...cookieOptions,
+      httpOnly: false,
+    });
+
+    return response;
   } catch (err) {
     console.error("Error creating pizza:", err);
     return NextResponse.json(

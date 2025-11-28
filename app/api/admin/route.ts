@@ -1,18 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-
-const COOKIE_MAX_AGE = 8;
-
-const cookieOptions = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  maxAge: COOKIE_MAX_AGE * 3600,
-  path: "/",
-  sameSite: (process.env.NODE_ENV === "production" ? "strict" : "lax") as
-    | "strict"
-    | "lax",
-};
+import { cookieOptions, COOKIE_MAX_AGE } from "../pizzas/utils/cookies";
+import { deleteCookies } from "../pizzas/utils/cookies";
 
 function unauthorized() {
   return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -83,13 +73,10 @@ export async function DELETE() {
   try {
     const response = NextResponse.json({ message: "Logged out successfully" });
 
-    response.cookies.delete({
-      name: "token",
-      path: "/",
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-    });
+    deleteCookies(response, [
+      { name: "token", httpOnly: true },
+      { name: "sortedBy", httpOnly: false },
+    ]);
 
     return response;
   } catch (err: unknown) {
