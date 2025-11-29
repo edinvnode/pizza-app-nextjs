@@ -1,18 +1,18 @@
 import React, { ChangeEvent, FC, useEffect, useState } from "react";
-import { PizzaType } from "@/app/page";
-import { SortOption, sortPizzas } from "@/utils/sortPizzas";
-import { setSortValue } from "@/redux/slices/pizzaDataSlice";
+import { CakeType } from "@/app/page";
+import { SortOption, sortCakes } from "@/utils/sortCakes";
+import { setSortValue } from "@/redux/slices/cakeDataSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
-import { sortLabels } from "@/utils/sortPizzas";
+import { sortLabels } from "@/utils/sortCakes";
 import Cookies from "js-cookie";
 
 interface SortProps {
-  pizzas: PizzaType[];
-  onSort: (sorted: PizzaType[]) => void;
+  cakes: CakeType[];
+  onSort: (sorted: CakeType[]) => void;
 }
 
-const Sort: FC<SortProps> = ({ pizzas, onSort }) => {
+const Sort: FC<SortProps> = ({ cakes, onSort }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [sortByCookie, setSortByCookie] = useState<string>("");
 
@@ -29,7 +29,7 @@ const Sort: FC<SortProps> = ({ pizzas, onSort }) => {
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value as SortOption;
-    const sorted = sortPizzas(pizzas, value);
+    const sorted = sortCakes(cakes, value);
     onSort(sorted);
     dispatch(setSortValue(value));
   };

@@ -6,7 +6,7 @@ import ReduxProvider from "@/redux/ReduxProvider";
 import { Toaster } from "react-hot-toast";
 
 export const metadata = {
-  title: "Torte od papira Mery 🎂",
+  title: "👧 Torte od papira Mery 🎂",
   description:
     "Unikatne papirne torte koje se mogu puniti slatkišima, sitnicama i iznenađenjima — savršene za rođendane, vrtiće, mature, diplome i sve posebne prilike. Svaka torta dolazi s čestitkom i može biti prazna ili puna — po vašoj želji.",
 };

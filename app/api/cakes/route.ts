@@ -9,8 +9,8 @@ export async function GET(req: NextRequest) {
   try {
     const cookieSortedBy = req.cookies.get("sortedBy")?.value || "{}";
     const sortedBy = JSON.parse(cookieSortedBy);
-    const pizzas = await prisma.pizza.findMany({ orderBy: sortedBy });
-    return NextResponse.json(pizzas);
+    const cakes = await prisma.cake.findMany({ orderBy: sortedBy });
+    return NextResponse.json(cakes);
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -36,11 +36,11 @@ export async function POST(req: NextRequest) {
 
     const imageUrl = await saveFile(file);
 
-    const pizza = await prisma.pizza.create({
+    const cake = await prisma.cake.create({
       data: { name, price, image: imageUrl, description },
     });
 
-    const response = NextResponse.json(pizza);
+    const response = NextResponse.json(cake);
     response.cookies.set("sortedBy", JSON.stringify(sortedBy), {
       ...cookieOptions,
       httpOnly: false,
@@ -48,9 +48,9 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (err) {
-    console.error("Error creating pizza:", err);
+    console.error("Error creating cake:", err);
     return NextResponse.json(
-      { error: "Failed to create pizza" },
+      { error: "Failed to create cake" },
       { status: 500 }
     );
   }

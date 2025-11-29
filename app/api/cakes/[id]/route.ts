@@ -11,10 +11,10 @@ export async function PATCH(
 ) {
   try {
     const { id } = await context.params;
-    const pizzaId = Number(id);
+    const cakeId = Number(id);
 
-    if (isNaN(pizzaId)) {
-      return NextResponse.json({ error: "Invalid pizza ID" }, { status: 400 });
+    if (isNaN(cakeId)) {
+      return NextResponse.json({ error: "Invalid cake ID" }, { status: 400 });
     }
 
     const formData = await req.formData();
@@ -32,11 +32,11 @@ export async function PATCH(
       );
     }
 
-    const existingPizza = await prisma.pizza.findUnique({
-      where: { id: pizzaId },
+    const existingcake = await prisma.cake.findUnique({
+      where: { id: cakeId },
     });
-    if (!existingPizza) {
-      return NextResponse.json({ error: "Pizza not found" }, { status: 404 });
+    if (!existingcake) {
+      return NextResponse.json({ error: "cake not found" }, { status: 404 });
     }
 
     const updateData: Record<string, any> = {};
@@ -45,14 +45,14 @@ export async function PATCH(
     if (file) updateData.image = await saveFile(file);
     if (description) updateData.description = description;
 
-    const updatedPizza = await prisma.pizza.update({
-      where: { id: pizzaId },
+    const updatedcake = await prisma.cake.update({
+      where: { id: cakeId },
       data: updateData,
     });
 
     const response = NextResponse.json({
-      message: "Pizza updated successfully",
-      pizza: updatedPizza,
+      message: "cake updated successfully",
+      cake: updatedcake,
     });
 
     response.cookies.set("sortedBy", JSON.stringify(sortedBy), {
@@ -61,9 +61,9 @@ export async function PATCH(
     });
     return response;
   } catch (err) {
-    console.error("Error updating pizza:", err);
+    console.error("Error updating cake:", err);
     return NextResponse.json(
-      { error: "Failed to update pizza" },
+      { error: "Failed to update cake" },
       { status: 500 }
     );
   }
@@ -71,23 +71,23 @@ export async function PATCH(
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: Promise<{ id: string }> } 
+  context: { params: Promise<{ id: string }> }
 ) {
   const { id } = await context.params;
 
-  const pizzaId = parseInt(id);
+  const cakeId = parseInt(id);
 
   const url = new URL(req.url);
   const sortedBy = url.searchParams.get("sortedBy");
   const sortedByObj = sortedBy ? JSON.parse(sortedBy) : null;
 
-  if (isNaN(pizzaId)) {
-    return NextResponse.json({ error: "Invalid pizza ID" }, { status: 400 });
+  if (isNaN(cakeId)) {
+    return NextResponse.json({ error: "Invalid cake ID" }, { status: 400 });
   }
 
   try {
-    const pizza = await prisma.pizza.delete({ where: { id: pizzaId } });
-    const response = NextResponse.json(pizza, { status: 200 });
+    const cake = await prisma.cake.delete({ where: { id: cakeId } });
+    const response = NextResponse.json(cake, { status: 200 });
     response.cookies.set("sortedBy", JSON.stringify(sortedByObj), {
       ...cookieOptions,
       httpOnly: false,
@@ -95,7 +95,7 @@ export async function DELETE(
     return response;
   } catch (error: any) {
     if (error.code === "P2025") {
-      return NextResponse.json({ error: "Pizza not found" }, { status: 404 });
+      return NextResponse.json({ error: "cake not found" }, { status: 404 });
     }
     return NextResponse.json(
       { error: "Internal server error" },

@@ -1,4 +1,4 @@
-import { PizzaType } from "@/app/page";
+import { CakeType } from "@/app/page";
 
 export type SortOption =
   | "name-asc"
@@ -9,11 +9,11 @@ export type SortOption =
   | "createdAt-asc"
   | "default";
 
-export const sortPizzas = (
-  pizzas: PizzaType[],
+export const sortCakes = (
+  cakes: CakeType[],
   option: SortOption
-): PizzaType[] => {
-  const sorted = [...pizzas];
+): CakeType[] => {
+  const sorted = [...cakes];
 
   switch (option) {
     case "name-asc":

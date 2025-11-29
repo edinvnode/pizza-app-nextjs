@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { cookieOptions, COOKIE_MAX_AGE } from "../pizzas/utils/cookies";
-import { deleteCookies } from "../pizzas/utils/cookies";
+import { cookieOptions, COOKIE_MAX_AGE } from "../cakes/utils/cookies";
+import { deleteCookies } from "../cakes/utils/cookies";
 
 function unauthorized() {
   return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

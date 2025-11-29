@@ -1,9 +1,6 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useState, useRef, FormEvent, ChangeEvent } from "react";
-import {
-  useAddPizzaMutation,
-  useEditPizzaMutation,
-} from "@/redux/api/pizzaApi";
+import { useAddCakeMutation, useEditCakeMutation } from "@/redux/api/cakeApi";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../redux/store";
 import { useLoginAdminMutation } from "@/redux/api/adminApi";
@@ -57,16 +54,14 @@ const Form: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const numberRef = useRef<HTMLInputElement>(null);
 
-  const [addPizza] = useAddPizzaMutation();
-  const [editPizza] = useEditPizzaMutation();
+  const [addCake] = useAddCakeMutation();
+  const [editCake] = useEditCakeMutation();
   const [loginAdmin] = useLoginAdminMutation();
   const [sendEmail] = useSendEmailMutation();
 
   const modalType = useSelector((state: RootState) => state.modalType);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-  const sortValue = useSelector(
-    (state: RootState) => state.pizzaData.sortValue
-  );
+  const sortValue = useSelector((state: RootState) => state.cakeData.sortValue);
   const dispatch = useDispatch<AppDispatch>();
 
   const {
@@ -88,9 +83,9 @@ const Form: React.FC = () => {
     paymentMethod,
   } = formData;
 
-  const isAddMode = modalType.value === "pizzaAdd";
-  const isEditMode = modalType.value === "pizzaEdit";
-  const isOrderMode = modalType.value === "pizzaOrder";
+  const isAddMode = modalType.value === "cakeAdd";
+  const isEditMode = modalType.value === "cakeEdit";
+  const isOrderMode = modalType.value === "cakeOrder";
   const isLoginMode = !isLoggedIn;
 
   const isAddInvalid = isAddMode && (!name || !price || !image || !description);
@@ -180,11 +175,11 @@ const Form: React.FC = () => {
       }
 
       if (isAddMode) {
-        await addPizza(formDataObj).unwrap();
+        await addCake(formDataObj).unwrap();
         toast.success("Torta uspješno dodata");
-      } else if (modalType.selectedPizza) {
-        await editPizza({
-          id: modalType.selectedPizza.id,
+      } else if (modalType.selectedCake) {
+        await editCake({
+          id: modalType.selectedCake.id,
           data: formDataObj,
         }).unwrap();
         toast.success("Torta uspješno uređena");
@@ -228,7 +223,7 @@ const Form: React.FC = () => {
             <input
               type="text"
               name="name"
-              defaultValue={modalType.selectedPizza?.name}
+              defaultValue={modalType.selectedCake?.name}
               onChange={handleChange}
               className="border rounded p-2 w-full"
               placeholder="Minnie mouse"
@@ -242,7 +237,7 @@ const Form: React.FC = () => {
             <input
               type="number"
               name="price"
-              defaultValue={modalType.selectedPizza?.price}
+              defaultValue={modalType.selectedCake?.price}
               onChange={handleChange}
               ref={numberRef}
               className="border rounded p-2 w-full"
@@ -279,7 +274,7 @@ const Form: React.FC = () => {
               rows={4}
               cols={40}
               className="border rounded p-2 w-full"
-              defaultValue={modalType.selectedPizza?.description}
+              defaultValue={modalType.selectedCake?.description}
               required={isAddMode}
             />
           </div>

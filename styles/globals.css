@@ -1,4 +1,6 @@
-@import 'tailwindcss';
-@import '@fortawesome/fontawesome-svg-core/styles.css';
+@import "tailwindcss";
+@import "@fortawesome/fontawesome-svg-core/styles.css";
 
-main { background: linear-gradient(to bottom, #dbeafe, #fbcfe8) }
+main {
+  background: linear-gradient(to bottom, #dbeafe, #fbcfe8);
+}

@@ -71,7 +71,7 @@ const About: FC = () => {
             Dobrodošli u Papirnu čaroliju. 🎀 <br /> Mjesto gdje pokloni postaju
             uspomene!
           </p>
-          <br/>
+          <br />
           <p className="mb-3 text-justify">
             Izrađujem unikatne papirne torte koje se mogu puniti slatkišima,
             sitnicama i iznenađenjima — savršene za rođendane, vrtiće, mature,

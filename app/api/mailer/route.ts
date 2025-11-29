@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
+import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
-  try { 
+  try {
     const formData = await req.formData();
     const cakeTheme = formData.get("cakeTheme") as string;
     const orderPrice = formData.get("orderPrice") as string;
@@ -14,14 +14,16 @@ export async function POST(req: Request) {
     const deliveryDetails = formData.get("deliveryDetails") as string;
     const orderEmail = formData.get("orderEmail") as string;
     const phoneNumber = formData.get("phoneNumber") as string;
-    const additionalDescription = formData.get("additionalDescription") as string;
+    const additionalDescription = formData.get(
+      "additionalDescription"
+    ) as string;
     const paymentMethod = formData.get("paymentMethod") as string;
 
     await resend.emails.send({
       from: `Narudžba Torte <onboarding@resend.dev>`,
       to: process.env.EMAIL_TO!,
       replyTo: orderEmail,
-      subject: `Nova narudžba - ${cakeTheme || 'Bez teme'}`,
+      subject: `Nova narudžba - ${cakeTheme || "Bez teme"}`,
       html: `
         <h2>Nova narudžba torte</h2>
         <p><strong>Tema torte:</strong> ${cakeTheme}</p>
@@ -39,7 +41,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch (err: any) {
-    console.error('Resend error:', err);
+    console.error("Resend error:", err);
     return NextResponse.json(
       { success: false, error: err.message },
       { status: 500 }

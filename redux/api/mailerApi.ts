@@ -15,7 +15,7 @@ export const mailerApi = createApi({
       query: (formData) => ({
         url: "/api/mailer",
         method: "POST",
-        body: formData
+        body: formData,
       }),
     }),
   }),
