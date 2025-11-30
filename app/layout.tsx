@@ -34,7 +34,6 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
               duration: 2000,
             }}
           />
-
           <Footer />
         </ReduxProvider>
       </body>

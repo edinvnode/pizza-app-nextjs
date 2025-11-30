@@ -11,7 +11,6 @@ import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 const Footer: FC = () => {
   return (
     <footer
-      role="contentinfo"
       className="bg-gray-800 text-white text-center p-4 mt-auto"
     >
       <div className="flex flex-col md:flex-row flex-wrap justify-center text-xl gap-10 items-center">
