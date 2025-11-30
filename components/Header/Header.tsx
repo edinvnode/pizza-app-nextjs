@@ -47,7 +47,7 @@ const Header: React.FC = () => {
     "text-gray-800 bg-gradient-to-r from-[#dbeafe] to-[#fbcfe8] bg-clip-text text-transparent hover:drop-shadow-[0_0_10px_rgba(219,234,254,0.8)] hover:scale-105 transition-all duration-300";
 
   const orderButtonClass =
-    "px-6 py-2 rounded-xl font-semibold text-gray-800 bg-gradient-to-b from-[#dbeafe] to-[#fbcfe8] shadow-[0_0_10px_#dbeafe,0_0_20px_#fbcfe8] hover:shadow-[0_0_15px_#dbeafe,0_0_30px_#fbcfe8] hover:scale-105 transition-all duration-300 text-xl cursor-pointer";
+    "px-6 py-2 rounded-xl font-semibold text-gray-800 bg-gradient-to-b from-[#dbeafe] to-[#fbcfe8] shadow-[0_0_10px_#dbeafe,0_0_20px_#fbcfe8] hover:shadow-[0_0_15px_#dbeafe,0_0_30px_#fbcfe8] hover:scale-105 transition-transform transition-shadow duration-300 text-xl cursor-pointer";
 
   return (
     <>
@@ -66,10 +66,10 @@ const Header: React.FC = () => {
         </div>
 
         {home && (
-          <div className="hidden xl:flex flex-2 justify-center">
+          <div className="hidden xl:flex flex-2 justify-center w-[240px]">
             <button
               onClick={() => dispatch(cakeOrder())}
-              className={`${orderButtonClass} ${!isLoggedIn ? "mr-60" : ""}`}
+              className={`${orderButtonClass} ${!isLoggedIn ? "mr-62" : ""}`}
             >
               NARUČI TORTU
             </button>
