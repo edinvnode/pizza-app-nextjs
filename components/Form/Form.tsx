@@ -1,14 +1,14 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useState, useRef, FormEvent, ChangeEvent } from "react";
-import {
-  useAddPizzaMutation,
-  useEditPizzaMutation,
-} from "@/redux/api/pizzaApi";
+import { useAddCakeMutation, useEditCakeMutation } from "@/redux/api/cakeApi";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../redux/store";
 import { useLoginAdminMutation } from "@/redux/api/adminApi";
 import { setLoggedIn } from "@/redux/slices/authSlice";
+import { useSendEmailMutation } from "@/redux/api/mailerApi";
 import Spinner from "../Spinner/Spinner";
+import toast from "react-hot-toast";
+import { closeModal } from "@/redux/slices/modalSlice";
 
 interface FormData {
   name?: string;
@@ -17,6 +17,16 @@ interface FormData {
   description?: string;
   email?: string;
   password?: string;
+  cakeTheme?: string;
+  orderPrice?: string;
+  numberOfPieces?: string;
+  colorOfPieces?: string;
+  delivery?: string;
+  deliveryDetails?: string;
+  orderEmail?: string;
+  phoneNumber?: string;
+  additionalDescription?: string;
+  paymentMethod?: string;
 }
 
 const Form: React.FC = () => {
@@ -27,35 +37,87 @@ const Form: React.FC = () => {
     description: "",
     email: "",
     password: "",
+    cakeTheme: "",
+    orderPrice: "",
+    numberOfPieces: "",
+    colorOfPieces: "",
+    delivery: "",
+    deliveryDetails: "",
+    orderEmail: "",
+    phoneNumber: "",
+    additionalDescription: "",
+    paymentMethod: "",
   });
 
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const numberRef = useRef<HTMLInputElement>(null);
 
-  const [addPizza] = useAddPizzaMutation();
-  const [editPizza] = useEditPizzaMutation();
+  const [addCake] = useAddCakeMutation();
+  const [editCake] = useEditCakeMutation();
   const [loginAdmin] = useLoginAdminMutation();
+  const [sendEmail] = useSendEmailMutation();
 
   const modalType = useSelector((state: RootState) => state.modalType);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const sortValue = useSelector((state: RootState) => state.cakeData.sortValue);
   const dispatch = useDispatch<AppDispatch>();
 
-  const { name, price, image, description, email, password } = formData;
+  const {
+    name,
+    price,
+    image,
+    description,
+    email,
+    password,
+    cakeTheme,
+    orderPrice,
+    numberOfPieces,
+    colorOfPieces,
+    delivery,
+    deliveryDetails,
+    orderEmail,
+    phoneNumber,
+    additionalDescription,
+    paymentMethod,
+  } = formData;
 
-  const isAddMode = modalType.value === "pizzaOrder";
-  const isEditMode = modalType.value === "pizzaEdit";
+  const isAddMode = modalType.value === "cakeAdd";
+  const isEditMode = modalType.value === "cakeEdit";
+  const isOrderMode = modalType.value === "cakeOrder";
   const isLoginMode = !isLoggedIn;
 
   const isAddInvalid = isAddMode && (!name || !price || !image || !description);
   const isEditInvalid = isEditMode && !name && !price && !image && !description;
+  const isOrderInvalid =
+    isOrderMode &&
+    (!cakeTheme ||
+      !orderPrice ||
+      !numberOfPieces ||
+      !colorOfPieces ||
+      !delivery ||
+      !deliveryDetails ||
+      !orderEmail ||
+      !phoneNumber ||
+      !additionalDescription ||
+      !paymentMethod);
   const isLoginInvalid = !email || !password;
 
   const btnDisabled =
     submitting ||
-    (isLoginMode ? isLoginInvalid : isAddInvalid || isEditInvalid);
+    (isLoginMode && !isOrderMode
+      ? isLoginInvalid
+      : isAddInvalid || isEditInvalid || isOrderInvalid);
+
+  const getButtonText = () => {
+    if (submitting) return <Spinner size={30} />;
+    if (isLoginMode && !isOrderMode) return "Prijavi se";
+    if (isAddMode) return "Dodaj";
+    if (isEditMode) return "Uredi";
+    if (isOrderMode) return "Naruči";
+    return "Pošalji";
+  };
 
   type InputElements =
     | HTMLInputElement
@@ -65,6 +127,7 @@ const Form: React.FC = () => {
   const handleChange = (e: ChangeEvent<InputElements>) => {
     const target = e.target;
     const { name, value, type } = target;
+
     const newValue =
       type === "file" && target instanceof HTMLInputElement
         ? target.files?.[0] ?? ""
@@ -75,53 +138,74 @@ const Form: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
-    setErrorMessage(null);
 
     try {
-      const formData = Object.entries({
-        name,
-        price: price?.toString(),
-        description,
-        email,
-        password,
-      }).reduce((fd, [key, value]) => {
-        if (value) fd.append(key, value);
-        return fd;
-      }, new FormData());
+      const formDataObj = new FormData();
 
-      if (image instanceof File) {
-        formData.append("file", image);
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key === "price" || key === "image") return;
+        if (value !== undefined && value !== null && value !== "") {
+          formDataObj.append(key, String(value));
+        }
+      });
+
+      const priceInput = numberRef.current as HTMLInputElement | null;
+      const priceRaw = priceInput?.value;
+
+      if (priceRaw && priceRaw !== "") {
+        formDataObj.set("price", priceRaw);
       }
 
-      if (isLoginMode) {
+      if (image instanceof File) {
+        formDataObj.append("file", image);
+      }
+
+      const [key, value] = sortValue.split("-");
+      const sortedBy = { [key]: value };
+      formDataObj.append("sortedBy", JSON.stringify(sortedBy));
+
+      if (isLoginMode && !isOrderMode) {
         await loginAdmin({
           email: email ?? "",
           password: password ?? "",
         }).unwrap();
         dispatch(setLoggedIn());
+        toast.success("Dobrodošla, Merisa :)");
         return;
       }
 
       if (isAddMode) {
-        await addPizza(formData).unwrap();
-        setFormData({ name: "", price: 0.0, image: "", description: "" });
-      } else if (modalType.selectedPizza) {
-        await editPizza({
-          id: modalType.selectedPizza.id,
-          data: formData,
+        await addCake(formDataObj).unwrap();
+        toast.success("Torta uspješno dodata");
+      } else if (modalType.selectedCake) {
+        await editCake({
+          id: modalType.selectedCake.id,
+          data: formDataObj,
         }).unwrap();
+        toast.success("Torta uspješno uređena");
+      }
+
+      if (isOrderMode) {
+        await sendEmail(formDataObj).unwrap();
+        toast.success("Narudžba uspješna!");
       }
 
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (err: any) {
       const action = isLoginMode ? "login" : isAddMode ? "add" : "edit";
-      const message =
-        err?.data?.message ??
-        err?.error ??
-        (err instanceof Error ? err.message : "Unknown error");
-      setErrorMessage(`Failed to ${action}: ${message}`);
+
+      const messages: Record<string, string> = {
+        login: "Pogrešan e-mail i/ili šifra",
+        add: "Greška u dodavanju torte",
+        edit: "Greška u uređivanju torte",
+      };
+
+      const message = messages[action];
+
+      if (message) toast.error(message);
     } finally {
       setSubmitting(false);
+      !isLoginMode && dispatch(closeModal());
     }
   };
 
@@ -130,30 +214,30 @@ const Form: React.FC = () => {
       onSubmit={handleSubmit}
       className="space-y-4 p-6 text-gray-900 -mt-4 text-center"
     >
-      {!isLoginMode ? (
+      {!isLoginMode && (isAddMode || isEditMode) && (
         <>
           <div>
             <label htmlFor="name" className="block">
-              Name:
+              Naziv:
             </label>
             <input
               type="text"
               name="name"
-              defaultValue={modalType.selectedPizza?.name}
+              defaultValue={modalType.selectedCake?.name}
               onChange={handleChange}
               className="border rounded p-2 w-full"
-              placeholder="Margherita"
+              placeholder="Minnie mouse"
               required={isAddMode}
             />
           </div>
           <div>
             <label htmlFor="price" className="block">
-              Price (USD):
+              Cijena (BAM):
             </label>
             <input
               type="number"
               name="price"
-              defaultValue={modalType.selectedPizza?.price}
+              defaultValue={modalType.selectedCake?.price}
               onChange={handleChange}
               ref={numberRef}
               className="border rounded p-2 w-full"
@@ -167,7 +251,7 @@ const Form: React.FC = () => {
 
           <div>
             <label htmlFor="image" className="block">
-              Image:
+              Slika:
             </label>
             <input
               type="file"
@@ -181,21 +265,22 @@ const Form: React.FC = () => {
 
           <div>
             <label htmlFor="description" className="block">
-              Description:
+              Opis:
             </label>
             <textarea
               name="description"
-              placeholder="An Italian dish consisting of a flat, leavened dough base topped with ingredients such as..."
+              placeholder="Minnie mouse papirna torta je..."
               onChange={handleChange}
               rows={4}
               cols={40}
               className="border rounded p-2 w-full"
-              defaultValue={modalType.selectedPizza?.description}
+              defaultValue={modalType.selectedCake?.description}
               required={isAddMode}
             />
           </div>
         </>
-      ) : (
+      )}
+      {isLoginMode && !isOrderMode && (
         <>
           <div>
             <label htmlFor="email" className="block">
@@ -204,7 +289,7 @@ const Form: React.FC = () => {
             <input
               name="email"
               type="email"
-              placeholder="Email"
+              placeholder="admin@example.com"
               className="border rounded p-2 w-full"
               defaultValue={formData.email}
               onChange={handleChange}
@@ -212,12 +297,11 @@ const Form: React.FC = () => {
           </div>
 
           <div className="relative w-full max-w-sm">
-            <label htmlFor="password">Password:</label>
-
+            <label htmlFor="password">Šifra:</label>
             <input
               name="password"
               type={showPassword ? "text" : "password"}
-              placeholder="Password"
+              placeholder="************"
               className="border rounded p-2 w-full"
               defaultValue={formData.password}
               onChange={handleChange}
@@ -232,6 +316,177 @@ const Form: React.FC = () => {
           </div>
         </>
       )}
+      {isOrderMode && (
+        <>
+          <div>
+            <label htmlFor="Cake Theme" className="block">
+              Tema torte:
+            </label>
+            <select
+              className="border rounded p-2 w-full"
+              name="cakeTheme"
+              onChange={handleChange}
+              value={formData.cakeTheme}
+            >
+              <option value=""></option>
+              <option value="Frozen">Frozen</option>
+              <option value="Paw Patrol">Paw Patrol</option>
+              <option value="Barbie">Barbie</option>
+              <option value="Minnie mouse">Minnie mouse</option>
+              <option value="Spiderman">Spiderman</option>
+              <option value="Nindža kornjače">Nindža kornjače</option>
+              <option value="Cars">Cars</option>
+              <option value="Mickey mouse">Mickey mouse</option>
+              <option value="Minecraft">Minecraft</option>
+              <option value="Ili po drugoj želji">Ili po drugoj želji</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="Order Price" className="block">
+              Cijena:
+            </label>
+            <select
+              className="border rounded p-2 w-full"
+              name="orderPrice"
+              onChange={handleChange}
+              value={formData.orderPrice}
+            >
+              <option value=""></option>
+              <option value="Bez slatkiša (1.5KM/komad)">
+                Bez slatkiša (1.5KM/komad)
+              </option>
+              <option value="Sa slatkišima (ovisno o vrsti – 3KM / 3.5KM / 4KM komad)">
+                Sa slatkišima (ovisno o vrsti – 3KM / 3.5KM / 4KM komad)
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="Number of Pieces" className="block">
+              Broj komada:
+            </label>
+            <select
+              className="border rounded p-2 w-full"
+              name="numberOfPieces"
+              onChange={handleChange}
+              value={formData.numberOfPieces}
+            >
+              <option value=""></option>
+              <option value="10">10</option>
+              <option value="12">12</option>
+              <option value="14">14</option>
+              <option value="20">20</option>
+              <option value="24">24</option>
+              <option value="30">30</option>
+              <option value="36">36</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="Color of Pieces" className="block">
+              Boja komada:
+            </label>
+            <select
+              className="border rounded p-2 w-full"
+              name="colorOfPieces"
+              onChange={handleChange}
+              value={formData.colorOfPieces}
+            >
+              <option value=""></option>
+              <option value="Šarena - sve boje">Šarena - sve boje</option>
+              <option value="Bijela">Bijela</option>
+              <option value="Žuta">Žuta</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="Delivery" className="block">
+              Preuzimanje:
+            </label>
+            <select
+              className="border rounded p-2 w-full"
+              name="delivery"
+              onChange={handleChange}
+              value={formData.delivery}
+            >
+              <option value=""></option>
+              <option value="Osobno preuzimanje trgovina">
+                Osobno preuzimanje (plaćanje gotovinom)
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="Delivery Details" className="block">
+              Podaci za dostavu:
+            </label>
+            <textarea
+              className="border rounded p-2 w-full"
+              name="deliveryDetails"
+              onChange={handleChange}
+              value={formData.deliveryDetails}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="Order E-mail" className="block">
+              E-mail adresa:
+            </label>
+            <input
+              type="email"
+              className="border rounded p-2 w-full"
+              name="orderEmail"
+              onChange={handleChange}
+              value={formData.orderEmail}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="Phone Number" className="block">
+              Broj telefona za kontakt:
+            </label>
+            <input
+              type="tel"
+              className="border rounded p-2 w-full"
+              name="phoneNumber"
+              onChange={handleChange}
+              value={formData.phoneNumber}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="Additional Description" className="block">
+              Dodatni opis:
+            </label>
+            <textarea
+              className="border rounded p-2 w-full"
+              name="additionalDescription"
+              onChange={handleChange}
+              value={formData.additionalDescription}
+            />
+          </div>
+          <div>
+            <label htmlFor="Payment Method" className="block">
+              Način plaćanja:
+            </label>
+            <select
+              className="border rounded p-2 w-full"
+              name="paymentMethod"
+              onChange={handleChange}
+              value={formData.paymentMethod}
+            >
+              <option value=""></option>
+              <option value="Kod osobnog preuzimanja">
+                Kod osobnog preuzimanja
+              </option>
+              <option value="Po pouzeću pošiljke">Po pouzeću pošiljke</option>
+              <option value="Transakcijski po ponudi">
+                Transakcijski po ponudi
+              </option>
+            </select>
+          </div>
+        </>
+      )}
+
       <button
         type="submit"
         className={`bg-[#1B2533] text-white px-4 py-2 rounded w-32 h-12 ${
@@ -241,11 +496,10 @@ const Form: React.FC = () => {
         }`}
         disabled={btnDisabled}
       >
-        {submitting ? <Spinner size={30} /> : isLoginMode ? "Login" : "Submit"}
+        {getButtonText()}
       </button>
-      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
     </form>
   );
-}
+};
 
 export default Form;

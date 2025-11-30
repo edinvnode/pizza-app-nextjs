@@ -9,7 +9,7 @@ export const Overlay: FC<OverlayProps> = ({ children }) => {
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 flex justify-center items-center bg-gray-100 bg-opacity-50 z-50"
+      className="fixed inset-0 flex justify-center items-center bg-gradient-to-b from-blue-100 to-pink-200 z-50"
     >
       {children}
     </div>

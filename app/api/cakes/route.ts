@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { saveFile } from "./utils/fileupload";
+import { cookieOptions } from "./utils/cookies";
 
 const prisma = new PrismaClient();
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const pizzas = await prisma.pizza.findMany({
-      orderBy: { createdAt: "desc" },
-    });
-    return NextResponse.json(pizzas);
+    const cookieSortedBy = req.cookies.get("sortedBy")?.value || "{}";
+    const sortedBy = JSON.parse(cookieSortedBy);
+    const cakes = await prisma.cake.findMany({ orderBy: sortedBy });
+    return NextResponse.json(cakes);
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -27,6 +28,7 @@ export async function POST(req: NextRequest) {
     const price = parseFloat(priceStr);
     const file = formData.get("file") as File;
     const description = formData.get("description") as string;
+    const sortedBy = JSON.parse(formData.get("sortedBy") as string);
 
     if (!name || isNaN(price) || !file || !description) {
       return NextResponse.json({ error: "Invalid data" }, { status: 400 });
@@ -34,15 +36,21 @@ export async function POST(req: NextRequest) {
 
     const imageUrl = await saveFile(file);
 
-    const pizza = await prisma.pizza.create({
+    const cake = await prisma.cake.create({
       data: { name, price, image: imageUrl, description },
     });
 
-    return NextResponse.json(pizza);
+    const response = NextResponse.json(cake);
+    response.cookies.set("sortedBy", JSON.stringify(sortedBy), {
+      ...cookieOptions,
+      httpOnly: false,
+    });
+
+    return response;
   } catch (err) {
-    console.error("Error creating pizza:", err);
+    console.error("Error creating cake:", err);
     return NextResponse.json(
-      { error: "Failed to create pizza" },
+      { error: "Failed to create cake" },
       { status: 500 }
     );
   }

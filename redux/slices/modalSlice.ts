@@ -1,41 +1,50 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { PizzaType } from "@/app/page";
+import { CakeType } from "@/app/page";
 
-export type ModalValue = "pizzaOrder" | "pizzaDetails" | "pizzaEdit" | null;
+export type ModalValue =
+  | "cakeAdd"
+  | "cakeDetails"
+  | "cakeEdit"
+  | "cakeOrder"
+  | null;
 
 interface ModalState {
   value: ModalValue;
-  selectedPizza?: PizzaType;
+  selectedCake?: CakeType;
 }
 
 const initialState: ModalState = {
   value: null,
-  selectedPizza: undefined,
+  selectedCake: undefined,
 };
 
 const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    pizzaOrder: (state, action: PayloadAction<PizzaType | undefined>) => {
-      state.value = "pizzaOrder";
-      state.selectedPizza = action.payload;
+    cakeAdd: (state, action: PayloadAction<CakeType | undefined>) => {
+      state.value = "cakeAdd";
+      state.selectedCake = action.payload;
     },
-    pizzaDetails: (state, action: PayloadAction<PizzaType | undefined>) => {
-      state.value = "pizzaDetails";
-      state.selectedPizza = action.payload;
+    cakeDetails: (state, action: PayloadAction<CakeType | undefined>) => {
+      state.value = "cakeDetails";
+      state.selectedCake = action.payload;
     },
-    pizzaEdit: (state, action: PayloadAction<PizzaType | undefined>) => {
-      state.value = "pizzaEdit";
-      state.selectedPizza = action.payload;
+    cakeEdit: (state, action: PayloadAction<CakeType | undefined>) => {
+      state.value = "cakeEdit";
+      state.selectedCake = action.payload;
+    },
+    cakeOrder: (state, action: PayloadAction<CakeType | undefined>) => {
+      state.value = "cakeOrder";
+      state.selectedCake = action.payload;
     },
     closeModal: (state) => {
       state.value = null;
-      state.selectedPizza = undefined;
+      state.selectedCake = undefined;
     },
   },
 });
 
-export const { pizzaOrder, pizzaDetails, pizzaEdit, closeModal } =
+export const { cakeAdd, cakeDetails, cakeEdit, cakeOrder, closeModal } =
   modalSlice.actions;
 export default modalSlice.reducer;

@@ -20,19 +20,24 @@ const Spinner: FC<SpinnerProps> = ({ size = 300 }) => {
           cx="50"
           cy="50"
           r="45"
-          fill="#FFD700"
-          stroke="#FFA500"
+          fill="#FFDAB9"
+          stroke="#E5945A"
           strokeWidth="5"
         />
-        <circle cx="35" cy="35" r="6" fill="#FF6347" />
-        <circle cx="65" cy="40" r="6" fill="#FF6347" />
-        <circle cx="50" cy="65" r="6" fill="#FF6347" />
-        <path
-          d="M50 50 L90 50"
-          stroke="#FFA500"
-          strokeWidth="5"
-          strokeLinecap="round"
+        <circle
+          cx="50"
+          cy="50"
+          r="35"
+          fill="#FFB6C1"
+          stroke="#FFA07A"
+          strokeWidth="3"
         />
+        <circle cx="50" cy="25" r="4" fill="#FF6347" />
+        <circle cx="70" cy="50" r="4" fill="#FF6347" />
+        <circle cx="30" cy="50" r="4" fill="#FF6347" />
+        <circle cx="50" cy="75" r="4" fill="#FF6347" />
+        <rect x="48" y="15" width="4" height="12" fill="#FF6347" rx="1" />
+        <circle cx="50" cy="12" r="2" fill="#FFD700" />
       </svg>
     </div>
   );

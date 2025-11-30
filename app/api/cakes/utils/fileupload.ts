@@ -18,7 +18,6 @@ export async function saveFile(file: File, folder = ""): Promise<string> {
       console.error("Storage list error (auth/permission):", listError);
       throw listError;
     }
-    console.log("Storage list OK, entries:", listData?.length ?? 0);
 
     const ext = String(file.name).split(".").pop();
     const base = String(file.name)

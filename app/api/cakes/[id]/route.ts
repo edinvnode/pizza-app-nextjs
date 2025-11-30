@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { saveFile } from "../utils/fileupload";
+import { cookieOptions } from "../utils/cookies";
 
 const prisma = new PrismaClient();
 
@@ -10,10 +11,10 @@ export async function PATCH(
 ) {
   try {
     const { id } = await context.params;
-    const pizzaId = Number(id);
+    const cakeId = Number(id);
 
-    if (isNaN(pizzaId)) {
-      return NextResponse.json({ error: "Invalid pizza ID" }, { status: 400 });
+    if (isNaN(cakeId)) {
+      return NextResponse.json({ error: "Invalid cake ID" }, { status: 400 });
     }
 
     const formData = await req.formData();
@@ -22,6 +23,7 @@ export async function PATCH(
     const price = priceStr ? parseFloat(priceStr) : undefined;
     const file = formData.get("file") as File | null;
     const description = formData.get("description") as string | null;
+    const sortedBy = JSON.parse(formData.get("sortedBy") as string);
 
     if (!name && !price && !file && !description) {
       return NextResponse.json(
@@ -30,9 +32,11 @@ export async function PATCH(
       );
     }
 
-    const existingPizza = await prisma.pizza.findUnique({ where: { id: pizzaId } });
-    if (!existingPizza) {
-      return NextResponse.json({ error: "Pizza not found" }, { status: 404 });
+    const existingcake = await prisma.cake.findUnique({
+      where: { id: cakeId },
+    });
+    if (!existingcake) {
+      return NextResponse.json({ error: "cake not found" }, { status: 404 });
     }
 
     const updateData: Record<string, any> = {};
@@ -41,19 +45,25 @@ export async function PATCH(
     if (file) updateData.image = await saveFile(file);
     if (description) updateData.description = description;
 
-    const updatedPizza = await prisma.pizza.update({
-      where: { id: pizzaId },
+    const updatedcake = await prisma.cake.update({
+      where: { id: cakeId },
       data: updateData,
     });
 
-    return NextResponse.json({
-      message: "Pizza updated successfully",
-      pizza: updatedPizza,
+    const response = NextResponse.json({
+      message: "cake updated successfully",
+      cake: updatedcake,
     });
+
+    response.cookies.set("sortedBy", JSON.stringify(sortedBy), {
+      ...cookieOptions,
+      httpOnly: false,
+    });
+    return response;
   } catch (err) {
-    console.error("Error updating pizza:", err);
+    console.error("Error updating cake:", err);
     return NextResponse.json(
-      { error: "Failed to update pizza" },
+      { error: "Failed to update cake" },
       { status: 500 }
     );
   }
@@ -64,18 +74,28 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> }
 ) {
   const { id } = await context.params;
-  const pizzaId = parseInt(id);
 
-  if (isNaN(pizzaId)) {
-    return NextResponse.json({ error: "Invalid pizza ID" }, { status: 400 });
+  const cakeId = parseInt(id);
+
+  const url = new URL(req.url);
+  const sortedBy = url.searchParams.get("sortedBy");
+  const sortedByObj = sortedBy ? JSON.parse(sortedBy) : null;
+
+  if (isNaN(cakeId)) {
+    return NextResponse.json({ error: "Invalid cake ID" }, { status: 400 });
   }
 
   try {
-    const pizza = await prisma.pizza.delete({ where: { id: pizzaId } });
-    return NextResponse.json(pizza, { status: 200 });
+    const cake = await prisma.cake.delete({ where: { id: cakeId } });
+    const response = NextResponse.json(cake, { status: 200 });
+    response.cookies.set("sortedBy", JSON.stringify(sortedByObj), {
+      ...cookieOptions,
+      httpOnly: false,
+    });
+    return response;
   } catch (error: any) {
     if (error.code === "P2025") {
-      return NextResponse.json({ error: "Pizza not found" }, { status: 404 });
+      return NextResponse.json({ error: "cake not found" }, { status: 404 });
     }
     return NextResponse.json(
       { error: "Internal server error" },
