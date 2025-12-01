@@ -89,12 +89,11 @@ const Home: FC = () => {
 
   return (
     <main className="bg-gray-50 min-h-screen flex flex-col items-center pb-16">
-
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 auto-rows-min place-items-start">
-      {sortedCakes.map((cake) => (
-        <Card key={cake.id} cakeData={cake} />
-      ))}
-    </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 auto-rows-min place-items-start">
+        {sortedCakes.map((cake) => (
+          <Card key={cake.id} cakeData={cake} />
+        ))}
+      </div>
 
       {cakeData?.nextCursor && (
         <div ref={sentinelRef} className="h-10 w-full flex justify-center">
