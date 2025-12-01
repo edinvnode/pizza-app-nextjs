@@ -19,14 +19,14 @@ export const cakeSlice = createSlice({
   reducers: {
     setCakeData: (state, action: PayloadAction<CakeType[]>) => {
       state.cakeData = action.payload;
-      state.sortedCakes = [...action.payload]; 
+      state.sortedCakes = [...action.payload];
     },
     setSortedCakes: (state, action: PayloadAction<CakeType[]>) => {
-      state.sortedCakes = [...action.payload]; 
+      state.sortedCakes = [...action.payload];
     },
     setSortValue: (state, action: PayloadAction<string>) => {
       state.sortValue = action.payload;
-    }
+    },
   },
 });
 

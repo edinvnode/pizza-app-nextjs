@@ -9,8 +9,12 @@ export const cakeApi = createApi({
   }),
   tagTypes: ["cake"],
   endpoints: (builder) => ({
-    getCakes: builder.query<CakeType[], void>({
-      query: () => "/api/cakes",
+    getCakes: builder.query<
+      { items: CakeType[]; nextCursor: string | null },
+      { cursor?: string; limit?: number }
+    >({
+      query: ({ cursor, limit = 10 }) =>
+        `api/cakes?limit=${limit}${cursor ? `&cursor=${cursor}` : ""}`,
       providesTags: ["cake"],
     }),
 

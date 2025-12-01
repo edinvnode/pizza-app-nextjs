@@ -9,8 +9,40 @@ export async function GET(req: NextRequest) {
   try {
     const cookieSortedBy = req.cookies.get("sortedBy")?.value || "{}";
     const sortedBy = JSON.parse(cookieSortedBy);
-    const cakes = await prisma.cake.findMany({ orderBy: sortedBy });
-    return NextResponse.json(cakes);
+
+    const { searchParams } = new URL(req.url);
+
+    const cursor = searchParams.get("cursor");
+    const limit = Number(searchParams.get("limit")) || 10;
+
+    let cakes;
+
+    if (cursor) {
+      cakes = await prisma.cake.findMany({
+        take: limit + 1,
+        skip: 1,
+        cursor: { id: parseInt(cursor) },
+        orderBy: sortedBy,
+      });
+    } else {
+      cakes = await prisma.cake.findMany({
+        take: limit + 1,
+        orderBy: sortedBy,
+      });
+    }
+
+    let nextCursor = null;
+
+    if (cakes.length > limit) {
+      const nextItem = cakes[limit];
+      nextCursor = nextItem.id;
+    }
+
+    return NextResponse.json({
+      items: cakes.slice(0, limit),
+      nextCursor,
+      hasMore: Boolean(nextCursor),
+    });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
