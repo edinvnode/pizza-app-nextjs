@@ -81,7 +81,7 @@ const Home: FC = () => {
     return (
       <Overlay>
         <h1 className="text-red-500 text-6xl text-center">
-          Error fetching cakes
+          Papirne torte nisu dostupne trenutno
         </h1>
       </Overlay>
     );
