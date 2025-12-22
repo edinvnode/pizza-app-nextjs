@@ -6,6 +6,7 @@ The app allows users to browse cakes, view detailed product pages, and interact 
 The project was built with a strong focus on **clean architecture, scalability,** and **real-world patterns** commonly used in production-grade React and Next.js applications.
 
 ## 🌐 Live Demo:
+
 👉 https://torteodpapira.vercel.app/
 
 ---
@@ -123,11 +124,12 @@ npm run dev
 
 - App runs at: http://localhost:3000
 - Uses Next.js App Router
-- API routes are available under ```bash/api```
+- API routes are available under `bash/api`
 
 ---
 
 ## Testing
+
 Run unit and component tests:
 
 ```bash
@@ -140,6 +142,7 @@ npm run test
 ---
 
 ## Build for Production
+
 ```bash
 npm run build
 npm run start
@@ -153,6 +156,7 @@ npm run start
 ### Project Goals
 
 This project was built to:
+
 - Demonstrate **full-stack Next.js skills**
 - Apply **React and Next.js patterns**
 - Showcase **Redux Toolkit best practices**
@@ -163,15 +167,15 @@ This project was built to:
 
 ## Future Improvements
 
- – Enhance security and session management with JWT/cookies
- – Implement a full-featured cart and smooth checkout experience
- – Allow users to view and track past orders with detailed information
- – Add advanced management for cakes, orders, users, and analytics
- – Support Stripe/PayPal or other payment gateways
- – Track orders from placement to delivery in real time
- – Visualize sales, popular items, and user activity with charts
- – Provide real-time messaging between customers and admins
- – Optimize media delivery using Next.js Image component
- – Implement critical flow tests with Playwright or Cypress
+- Enhance security and session management with JWT/cookies
+- Implement a full-featured cart and smooth checkout experience
+- Allow users to view and track past orders with detailed information
+- Add advanced management for cakes, orders, users, and analytics
+- Support Stripe/PayPal or other payment gateways
+- Track orders from placement to delivery in real time
+- Visualize sales, popular items, and user activity with charts
+- Provide real-time messaging between customers and admins
+- Optimize media delivery using Next.js Image component
+- Implement critical flow tests with Playwright or Cypress
 
 ---
